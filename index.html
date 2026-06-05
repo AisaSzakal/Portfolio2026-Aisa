@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aisa Szakal Blanka — Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&display=swap" rel="stylesheet"> 
+<link href="https://fonts.googleapis.com/css2?family=Finlandica+Text:ital,wght@0,100..900;1,100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@1,400..800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --black: #0a0a0a;
+  --white: #ffffff;
+  --gray: #D9D9D9;
+  --gray-dark: #433C3C;
+  --serif: 'Inter', Georgia, serif;
+  --sans:  "Inter", serif;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  background: var(--white);
+  color: var(--black);
+  font-family: var(--sans);
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* CURSOR */
+#cur { width:8px; height:8px; background:var(--black); border-radius:50%; position:fixed; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); transition: width .25s, height .25s; }
+#cur-r { width:28px; height:28px; border:1px solid var(--black); border-radius:50%; position:fixed; pointer-events:none; z-index:9998; transform:translate(-50%,-50%); opacity:.4; transition: width .25s, height .25s; }
+@media(max-width:768px){ #cur,#cur-r{display:none} body{cursor:auto} }
+
+/* NAV */
+nav {
+  position: fixed; top:0; left:0; right:0; height:48px;
+  display:flex; align-items:center; justify-content:space-between;
+  padding: 0 24px;
+  background: var(--white);
+  border-bottom: 1px solid transparent;
+  z-index: 200;
+  transition: border-color .3s;
+}
+nav.scrolled { border-color: #e0e0e0; }
+.nav-logo { font-family:var(--serif); color: black; font-size: 20px; font-weight: 400; word-wrap: break-word; text-decoration:none; color:var(--black); letter-spacing:.04em; }
+.nav-links { display:flex; gap:32px; list-style:none; }
+.nav-links a { font-family:var(--serif); font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--black); text-decoration:none; transition:opacity .2s; }
+.nav-links a:hover { opacity:.45; }
+
+/* ─── SECTION 1: HERO ─── */
+.s-hero {
+  padding-top: 48px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.hero-top {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  padding: 0 12px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.hero-left {
+  padding: 48px 0px 48px 80px;
+  border-right: none;
+}
+
+.hero-year {
+  font-family: var(--serif);
+  font-size: 24px;
+  font-weight: 400;
+  letter-spacing: .12em;
+  color:#999696;
+word-wrap: break-word;
+  margin-bottom: 10px;
+  margin-left: 0.2em;
+  opacity:0; animation: fu .7s ease .2s forwards;
+}
+
+.hero-name {
+  font-family: var(--serif);
+  font-size: clamp(32px, 3.5vw, 58px);
+  font-weight: 600;
+  letter-spacing: .03em;
+  line-height: 1.1;
+  text-transform: uppercase;
+  opacity:0; animation: fu .7s ease .35s forwards;
+}
+
+.hero-right {
+  padding: 57px 0px 48px 180px;
+  display:flex; flex-direction:column; justify-content:space-between;
+}
+
+.hero-greeting {
+    color: black;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.28px;
+    word-wrap: break-word;
+    text-transform: uppercase;
+  margin-bottom: 14px;
+  opacity:0; animation: fu .7s ease .45s forwards;
+}
+
+.hero-bio {
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.85;
+  color: #444;
+  max-width: 420px;
+  opacity:0; animation: fu .7s ease .6s forwards;
+}
+
+.hero-bio-bottom {
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.85;
+  color: #444;
+  max-width: 420px;
+  margin-top: auto;
+  padding-top: 40px;
+  opacity:0; animation: fu .7s ease .75s forwards;
+}
+
+/* full-width image block */
+.hero-image {
+  width: 100%;
+  height: 52vh;
+  min-height: 340px;
+  background: var(--gray);
+  position: relative;
+  flex-shrink: 0;
+  opacity:0; animation: fi .9s ease .5s forwards;
+}
+.hero-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.hero-bottom-text {
+  padding: 40px 14px;
+  max-width: 650px;
+  font-weight: 700;
+  margin-left: 68%;
+  width: 420px;
+}
+
+.hero-bottom-text p {
+  font-size: 14px;
+  line-height: 1.85;
+  color: #444;
+  grid-column: 2;
+  max-width: 420px;
+}
+
+/* ─── SECTION 2: WORKS ─── ------------------------*/
+.s-works {
+  padding: 0 24px 80px;
+}
+
+.works-nav-logo { font-size:14px; font-weight:400; color:var(--black); }
+.works-nav-links { display:flex; gap:28px; }
+.works-nav-links a { font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--black); text-decoration:none; transition:opacity .2s; }
+.works-nav-links a:hover { opacity:.45; }
+
+.works-title-row {
+    display:flex;
+  gap:80px;
+  align-items:flex-start;
+  padding:48px 24px 40px;
+}
+
+.works-title {
+  font-family: var(--serif);
+  font-size: clamp(32px, 4vw, 52px);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .03em;
+}
+
+.works-desc {
+  font-size:13px; font-weight:700; line-height:1.8; color:#555;
+  max-width: 280px;
+}
+
+/* staggered diagonal lines + labels */
+.works-stagger {
+  position: relative;
+  height: 400px;
+  margin: 16px 24px 40px;
+}
+
+.stagger-line {
+  position: absolute;
+  bottom: 0;
+  width: 25%;
+  border-top: 3px solid var(--black);
+}
+
+.stagger-line:nth-child(1) { left:75%;    bottom: 140px; }
+.stagger-line:nth-child(2) { left:50%;   bottom: 90px; }
+.stagger-line:nth-child(3) { left:25%;   bottom: 44px; }
+.stagger-line:nth-child(4) { left:0%;   bottom: 0px; border-top-width:0; border-bottom: 3px solid var(--black); }
+
+
+.stagger-line:nth-child(1) .stagger-label { left:0; }
+.stagger-line:nth-child(2) .stagger-label { left:0; }
+.stagger-line:nth-child(3) .stagger-label { left:0; }
+.stagger-line:nth-child(4) .stagger-label { left:0; }
+
+/* the visible line is a pseudo-element so we can animate it independently */
+.stagger-line::before {
+  content: '';
+  display: block;
+  width: 100%;
+  height: 3px;
+  background: var(--black);
+  transform-origin: left center;
+  transition: height .2s ease, background .2s ease;
+}
+.stagger-line:hover::before {
+  height: 6px;
+  background: var(--black);
+}
+
+.stagger-label {
+  position: absolute;
+  top: calc(100% + 4px); /* sits just below the ::before line */
+  left: 0;
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 24px; letter-spacing:.16em; text-transform:uppercase; color:var(--black);
+  margin-top: 8px;
+  white-space: nowrap;
+  transition: letter-spacing .25s ease, opacity .2s ease;
+}
+
+/* on hover: label spreads out slightly — clear signal something is happening */
+.stagger-line:hover .stagger-label {
+  letter-spacing: .26em;
+}
+/* ── HOVER IMAGE that follows the cursor ── */
+stagger-line:hover .stagger-label {
+  letter-spacing: .26em;
+}
+
+/* ── HOVER IMAGE that follows the cursor ── */
+.stagger-hover-img {
+  position: fixed;
+  width: 340px;
+  height: 240px;
+  pointer-events: none;
+  z-index: 300;
+  opacity: 0;
+  transform: translate(-50%, -115%) scale(0.88) rotate(0deg);
+  transition: opacity .3s ease, transform .3s ease;
+  overflow: hidden;
+  background: var(--gray);
+}
+.stagger-hover-img.visible {
+  opacity: 1;
+  transform: translate(-50%, -115%) scale(1) rotate(0deg);
+}
+.stagger-hover-img img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+}
+.stagger-hover-img .img-label {
+  position: absolute; bottom: 10px; left: 12px;
+  font-family: var(--serif);
+  font-size: 11px; font-weight: 400; font-style: italic;
+  color: rgba(255,255,255,0.85);
+  letter-spacing: .06em;
+  text-shadow: 0 1px 4px rgba(0,0,0,.4);
+}
+/* placeholder text inside the gray box when no real image */
+.stagger-hover-img .img-placeholder {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 9px; letter-spacing: .2em; text-transform: uppercase; color: #aaa;
+}
+
+
+/* ─── SECTION 3: ABOUT ───---------------------------- */
+.s-about {
+  padding: 80px 47px 80px;
+}
+
+.about-header {
+  padding: 48px 0 40px;
+}
+
+.about-title {
+  font-family: var(--serif);
+  font-size: clamp(32px, 4vw, 52px);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .03em;
+}
+
+.about-body {
+  display: grid;
+  grid-template-columns: 0.8fr 1.2fr;
+  gap: 48px;
+  align-items: start;
+}
+.about-subtitle {
+  font-family: var(--serif);
+  font-size: clamp(22px, 2.5vw, 32px);
+  font-weight: 400;
+  color: #999696;;
+  font-style: italic;
+  line-height: 1;
+  margin-bottom: 24px;
+}
+
+/* two photo placeholders */
+.about-photos {
+  display:grid; grid-template-columns:1fr 1fr; gap:8px;
+  margin-bottom: 32px;
+}
+.about-photo {
+  background: var(--gray-dark);
+  aspect-ratio: 3/4;
+}
+
+/* scrolling italic list */
+.about-list {
+  overflow:hidden; height:180px; position:relative;
+}
+.about-list-inner {
+  display:flex; flex-direction:column; gap:0;
+  animation: scrollList 10s linear infinite;
+}
+.about-list-inner span {
+  font-family: var(--serif);
+  font-size: clamp(24px, 2vw, 26px);
+  font-style: italic;
+  font-weight: 400;
+  line-height: 2;
+  white-space: nowrap;
+  color: var(--black);
+}
+.about-list::after {
+  content:''; position:absolute; bottom:0; left:0; right:0; height:60px;
+  background: linear-gradient(to top, white, transparent);
+}
+
+.about-right {
+  padding-top: 86px;
+}
+
+.about-text {
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 1.2;
+  color: #444;
+}
+
+/* ─── SECTION 4: CONTACT ─── */
+
+.contact-nav-bar {
+  display:flex; justify-content:space-between; align-items:center;
+  padding: 14px 0;
+
+}
+
+.contact-title-row {
+  padding: 56px 0 40px;
+}
+
+.contact-title {
+  font-family: var(--serif);
+  font-size: clamp(32px, 4vw, 52px);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing:.03em;
+  margin-left: 48px;
+}
+
+.contact-gray-block img {
+  width: 100%;
+  height: 220px;
+  background: var(--gray);
+  position: relative;
+  margin-bottom: 0;
+}
+
+.contact-details {
+margin-left: 48px;
+  padding: 40px 0 80px;
+}
+
+.contact-line {
+  font-family: var(--serif);
+  font-size: clamp(18px, 2vw, 24px);
+  font-weight: 300;
+  letter-spacing: .06em;
+  line-height: 2;
+  color: var(--black);
+}
+
+.contact-link {
+  color: var(--black);
+  text-decoration: none;
+  border-bottom: 1px solid var(--black);
+  transition: opacity .2s;
+}
+.contact-link:hover { opacity:.45; }
+
+/* ─── FOOTER ─── */
+footer {
+  border-top: 1px solid #e0e0e0;
+  padding: 20px 24px;
+  display:flex; justify-content:space-between; align-items:center;
+}
+footer span { font-size:11px; letter-spacing:.08em; color:#999; }
+
+/* ─── ANIMATIONS ─── */
+/* ─── ANIMATIONS ─── */
+@keyframes fu { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+@keyframes fi { from{opacity:0} to{opacity:1} }
+@keyframes scrollList {
+  0%   { transform: translateY(0); }
+  100% { transform: translateY(-50%); }
+}
+ 
+.reveal { opacity:0; transform:translateY(20px); transition: opacity .7s ease, transform .7s ease; }
+.reveal.in { opacity:1; transform:translateY(0); }
+ 
+/* ─── RESPONSIVE ─── */
+@media(max-width:768px){
+  .hero-top, .about-body, .hero-bottom-text { grid-template-columns:1fr; }
+  .hero-left { border-right:none; border-bottom:1px solid #e0e0e0; padding-bottom:32px; }
+  .hero-right { padding: 32px 0 0; }
+  .hero-bottom-text-spacer { display: none; }
+  .hero-bottom-text p { padding: 32px 0; }
+  .about-photos { max-width:280px; }
+  .stagger-hover-img { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div id="cur"></div>
+<div id="cur-r"></div>
+
+<!-- FIXED NAV -->
+<nav id="nav">
+  <a href="#" class="nav-logo">Portfolio</a>
+  <ul class="nav-links">
+    <li><a href="#works">Works</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- ════════════════════════════════
+     SECTION 1 — HERO
+════════════════════════════════ -->
+<section class="s-hero">
+  <div class="hero-top">
+    <div class="hero-left">
+      <p class="hero-year">2026</p>
+      <h1 class="hero-name">Aisa Szakal Blanka</h1>
+    </div>
+    <div class="hero-right">
+      <div>
+        <p class="hero-greeting">Hey, Szia, Hoi, Hola, Bom dia!</p>
+        <p class="hero-bio">My name is pronounced Ai/ʃ/a. I have good eyes, both theoretically and metaphorically. I like observing people, collecting details, and paying attention to things that are easy to miss. </p>
+      </div>
+    </div>
+  </div>
+  <div class="hero-image">
+     <img src="/assets/IMG_0100.jpeg" alt="Main Image">
+  </div>
+  <div class="hero-bottom-text">
+    <p>
+        I have spent my life writing, drawing, filming, photographing, and finding different ways to give shape to my thoughts. I am endlessly curious and critical (career-wise, in my modest opinion, that’s a good thing). Together, those two traits have become the foundation of how I work and how I see the world.
+    </p>
+  </div>
+</section>
+
+<!-- ════════════════════════════════
+     SECTION 2 — WORKS
+════════════════════════════════ -->
+<section class="s-works" id="works">
+
+    <div class="works-title-row reveal">
+      <h2 class="works-title">Works</h2>
+    </div>
+  
+    <div class="works-stagger reveal">
+      <!--
+        data-img  = path to your image for that category (add when ready)
+        data-label = caption shown on the image
+        href       = page it links to
+      -->
+      <a class="stagger-line" href="podcast.html"
+         data-img="" data-label="Podcast">
+        <span class="stagger-label">Podcast</span>
+      </a>
+      <a class="stagger-line" href="videomapping.html"
+         data-img="" data-label="Videomapping">
+        <span class="stagger-label">Videomapping</span>
+      </a>
+      <a class="stagger-line" href="animation.html"
+         data-img="" data-label="Animation">
+        <span class="stagger-label">Animation</span>
+      </a>
+      <a class="stagger-line" href="posters.html"
+         data-img="" data-label="Posters">
+        <span class="stagger-label">Posters</span>
+      </a>
+    </div>
+  
+  </section>
+  
+
+  <!-- WORK THUMBNAILS --
+
+</section>
+
+ ════════════════════════════════
+     SECTION 3 — ABOUT
+════════════════════════════════ -->
+<section class="s-about" id="about">
+  <div class="about-header reveal">
+    <h2 class="about-title">About me!</h2>
+  </div>
+
+  <div class="about-body">
+
+    <div class="about-left reveal">
+      <p class="about-subtitle">Everything I<br>wanted to be:</p>
+
+      <div class="about-photos">
+        <img src="/assets/me3.jpg" alt="Main Image">
+      </div>
+
+      <div class="about-list">
+        <div class="about-list-inner" id="listInner">
+          <span>— Archaeologist</span>
+          <span>— Food Critic</span>
+          <span>— Director</span>
+          <span>— Ballerina</span>
+          <span>— Writer</span>
+          <span>— Filmmaker</span>
+          <span>— Photographer</span>
+          <!-- duplicated for seamless loop -->
+          <span>— Archaeologist</span>
+          <span>— Food Critic</span>
+          <span>— Director</span>
+          <span>— Ballerina</span>
+          <span>— Writer</span>
+          <span>— Filmmaker</span>
+          <span>— Photographer</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="about-right reveal">
+      <p class="about-text">
+        Theoretically, I am constantly learning, to keep up with the changes. Learning about new softwares, apps, AI tools, arts, filmography. I adapt easily since, I moved 4–5 times since I left my home.<br><br>
+        Theoretically, I am constantly learning, to keep up with the changes. Learning about new softwares, apps, AI tools, arts, filmography. I adapt easily since, I moved 4–5 times since I left my home.<br><br>
+        Theoretically, I am constantly learning, to keep up with the changes. Learning about new softwares, apps, AI tools, arts, filmography. I adapt easily since, I moved 4–5 times since I left my home.<br><br>
+        Theoretically, I am constantly learning, to keep up with the changes. Learning about new softwares, apps, AI tools, arts, filmography. I adapt easily since, I moved 4–5 times s
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ════════════════════════════════
+     SECTION 4 — CONTACT
+════════════════════════════════ -->
+<section class="s-contact" id="contact">
+  <div class="contact-title-row reveal">
+    <h2 class="contact-title">Contact me!</h2>
+  </div>
+
+  <div class="contact-gray-block reveal">
+    <img src="/assets/IMG_9193.jpeg" alt="Main Image">
+  </div>
+
+  <div class="contact-details reveal">
+    <p class="contact-line">Email: <a href="mailto:your@email.com" class="contact-link">your@email.com</a></p>
+    <p class="contact-line">Phone: <a href="tel:+00000000000" class="contact-link">+00 000 000 0000</a></p>
+  </div>
+
+</section>
+
+<footer>
+  <span>© 2026 Aisa Szakal Blanka</span>
+  <span>Budapest, HU</span>
+</footer>
+
+<script>
+// cursor
+const cur = document.getElementById('cur');
+const curR = document.getElementById('cur-r');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove', e => {
+  mx=e.clientX; my=e.clientY;
+  cur.style.left=mx+'px'; cur.style.top=my+'px';
+});
+(function tick(){ rx+=(mx-rx)*.13; ry+=(my-ry)*.13;
+  curR.style.left=rx+'px'; curR.style.top=ry+'px';
+  requestAnimationFrame(tick); })();
+
+// nav scroll
+const nav = document.getElementById('nav');
+window.addEventListener('scroll',()=>{ nav.classList.toggle('scrolled', scrollY>20); });
+
+// scroll reveal
+const els = document.querySelectorAll('.reveal');
+const io = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }});
+},{threshold:0.08});
+els.forEach(el=>io.observe(el));
+
+// ── stagger hover image ──
+const hoverImg    = document.getElementById('hoverImg');
+const hoverImgEl  = document.getElementById('hoverImgEl');
+const hoverLabel  = document.getElementById('hoverLabel');
+const hoverPH     = document.getElementById('hoverPlaceholder');
+const lines       = document.querySelectorAll('.stagger-line');
+
+let hoverVisible = false;
+let targetX = 0, targetY = 0;
+let currentX = 0, currentY = 0;
+let prevX = 0;
+let tilt = 0;
+
+// smooth lerp loop for the image position + tilt
+(function animHover() {
+  if (hoverVisible) {
+    currentX += (targetX - currentX) * 0.1;
+    currentY += (targetY - currentY) * 0.1;
+
+    // velocity-based tilt: how fast cursor moves horizontally
+    const vx = targetX - prevX;
+    prevX = targetX;
+    tilt += (vx * 0.4 - tilt) * 0.12;
+    tilt = Math.max(-8, Math.min(8, tilt));
+
+    const w = hoverImg.offsetWidth;
+    let x = currentX;
+    if (x - w/2 < 12) x = w/2 + 12;
+    if (x + w/2 > window.innerWidth - 12) x = window.innerWidth - w/2 - 12;
+
+    hoverImg.style.left = x + 'px';
+    hoverImg.style.top  = currentY + 'px';
+    hoverImg.style.transform = `translate(-50%, -115%) scale(1) rotate(${tilt}deg)`;
+  }
+  requestAnimationFrame(animHover);
+})();
+
+document.addEventListener('mousemove', e => {
+  targetX = e.clientX;
+  targetY = e.clientY;
+});
+
+lines.forEach(line => {
+  line.addEventListener('mouseenter', e => {
+    const imgSrc = line.dataset.img;
+    const label  = line.dataset.label;
+
+    if (imgSrc) {
+      hoverImgEl.src = imgSrc;
+      hoverImgEl.style.display = 'block';
+      hoverPH.style.display = 'none';
+    } else {
+      hoverImgEl.style.display = 'none';
+      hoverPH.style.display = 'block';
+      hoverPH.textContent = label;
+    }
+
+    hoverLabel.textContent = label;
+    hoverVisible = true;
+    hoverImg.classList.add('visible');
+  });
+
+  line.addEventListener('mouseleave', () => {
+    hoverVisible = false;
+    hoverImg.classList.remove('visible');
+    hoverImg.style.transform = `translate(-50%, -115%) scale(0.88) rotate(0deg)`;
+    tilt = 0;
+  });
+});
+</script>
+</body>
+</html>
