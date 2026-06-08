@@ -6,18 +6,10 @@
 <title>Aisa Szakal Blanka — Portfolio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&display=swap" rel="stylesheet"> 
-<link href="https://fonts.googleapis.com/css2?family=Finlandica+Text:ital,wght@0,100..900;1,100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@1,400..800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
 <style>
+
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
@@ -26,7 +18,7 @@
   --gray: #D9D9D9;
   --gray-dark: #433C3C;
   --serif: 'Inter', Georgia, serif;
-  --sans:  "Inter", serif;
+  --sans:  "EB Garamond", serif;
 }
 
 html { scroll-behavior: smooth; }
@@ -54,7 +46,8 @@ nav {
   transition: border-color .3s;
 }
 nav.scrolled { border-color: #e0e0e0; }
-.nav-logo { font-family:var(--serif); color: black; font-size: 20px; font-weight: 400; word-wrap: break-word; text-decoration:none; color:var(--black); letter-spacing:.04em; }
+.nav-logo {   font-family: var(--serif); font-size:13px; font-weight:600;
+  text-transform:uppercase; letter-spacing:.08em; color:var(--black);text-decoration: none; }
 .nav-links { display:flex; gap:32px; list-style:none; }
 .nav-links a { font-family:var(--serif); font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--black); text-decoration:none; transition:opacity .2s; }
 .nav-links a:hover { opacity:.45; }
@@ -80,12 +73,15 @@ nav.scrolled { border-color: #e0e0e0; }
 }
 
 .hero-year {
-  font-family: var(--serif);
-  font-size: 24px;
+    font-family: var(--sans); /* EB Garamond — serif, elegant */
+  font-size: clamp(18px, 3vw, 40px);
   font-weight: 400;
-  letter-spacing: .12em;
-  color:#999696;
-word-wrap: break-word;
+  font-style: italic;
+  letter-spacing: -.02em;
+  color: var(--black);
+  color: #444;
+  line-height: 1;
+  margin-bottom: 24px;
   margin-bottom: 10px;
   margin-left: 0.2em;
   opacity:0; animation: fu .7s ease .2s forwards;
@@ -93,11 +89,13 @@ word-wrap: break-word;
 
 .hero-name {
   font-family: var(--serif);
-  font-size: clamp(32px, 3.5vw, 58px);
-  font-weight: 600;
-  letter-spacing: .03em;
-  line-height: 1.1;
+  font-size: clamp(36px, 6vw, 60px);
+  font-weight: 700;
+  letter-spacing: -.03em;
+  line-height: .92;
   text-transform: uppercase;
+  color: var(--black);
+  overflow: hidden;
   opacity:0; animation: fu .7s ease .35s forwards;
 }
 
@@ -120,7 +118,7 @@ word-wrap: break-word;
 .hero-bio {
   font-family: var(--sans);
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 500;
   line-height: 1.85;
   color: #444;
   max-width: 420px;
@@ -130,7 +128,7 @@ word-wrap: break-word;
 .hero-bio-bottom {
   font-family: var(--sans);
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 500;
   line-height: 1.85;
   color: #444;
   max-width: 420px;
@@ -159,7 +157,7 @@ word-wrap: break-word;
 .hero-bottom-text {
   padding: 40px 14px;
   max-width: 650px;
-  font-weight: 700;
+  font-weight: 500;
   margin-left: 68%;
   width: 420px;
 }
@@ -190,11 +188,13 @@ word-wrap: break-word;
 }
 
 .works-title {
-  font-family: var(--serif);
-  font-size: clamp(32px, 4vw, 52px);
-  font-weight: 600;
+    font-family: var(--serif);
+  font-size: clamp(36px, 6vw, 60px);
+  font-weight: 700;
+  letter-spacing: -.03em;
+  line-height: .92;
   text-transform: uppercase;
-  letter-spacing: .03em;
+  color: var(--black);
 }
 
 .works-desc {
@@ -246,10 +246,16 @@ word-wrap: break-word;
   position: absolute;
   top: calc(100% + 4px); /* sits just below the ::before line */
   left: 0;
-  font-family: var(--serif);
-  font-style: italic;
+  font-family: var(--sans); /* EB Garamond — serif, elegant */
+  font-size: clamp(18px, 3vw, 40px);
   font-weight: 400;
-  font-size: 24px; letter-spacing:.16em; text-transform:uppercase; color:var(--black);
+  font-style: italic;
+  letter-spacing: -.02em;
+  color: var(--black);
+  color: #444;
+  line-height: 1;
+  margin-bottom: 24px;
+
   margin-top: 8px;
   white-space: nowrap;
   transition: letter-spacing .25s ease, opacity .2s ease;
@@ -310,11 +316,13 @@ stagger-line:hover .stagger-label {
 }
 
 .about-title {
-  font-family: var(--serif);
-  font-size: clamp(32px, 4vw, 52px);
-  font-weight: 600;
+    font-family: var(--serif);
+  font-size: clamp(36px, 6vw, 60px);
+  font-weight: 700;
+  letter-spacing: -.03em;
+  line-height: .92;
   text-transform: uppercase;
-  letter-spacing: .03em;
+  color: var(--black);
 }
 
 .about-body {
@@ -324,11 +332,13 @@ stagger-line:hover .stagger-label {
   align-items: start;
 }
 .about-subtitle {
-  font-family: var(--serif);
-  font-size: clamp(22px, 2.5vw, 32px);
+    font-family: var(--sans); /* EB Garamond — serif, elegant */
+  font-size: clamp(18px, 3vw, 40px);
   font-weight: 400;
-  color: #999696;;
   font-style: italic;
+  letter-spacing: -.02em;
+  color: var(--black);
+  color: #444;
   line-height: 1;
   margin-bottom: 24px;
 }
@@ -352,13 +362,18 @@ stagger-line:hover .stagger-label {
   animation: scrollList 10s linear infinite;
 }
 .about-list-inner span {
-  font-family: var(--serif);
-  font-size: clamp(24px, 2vw, 26px);
-  font-style: italic;
+  font-family: var(--sans); /* EB Garamond — serif, elegant */
+  font-size: clamp(18px, 2vw, 35px);
   font-weight: 400;
+  font-style: italic;
+  letter-spacing: -.02em;
+  color: var(--black);
+  color: #444;
+  line-height: 1;
+  margin-bottom: 24px;
   line-height: 2;
   white-space: nowrap;
-  color: var(--black);
+
 }
 .about-list::after {
   content:''; position:absolute; bottom:0; left:0; right:0; height:60px;
@@ -366,10 +381,11 @@ stagger-line:hover .stagger-label {
 }
 
 .about-right {
-  padding-top: 86px;
+  padding-top: 100px;
 }
 
 .about-text {
+    font-family: var(--sans);
   font-size: 24px;
   font-weight: 500;
   line-height: 1.2;
@@ -389,12 +405,13 @@ stagger-line:hover .stagger-label {
 }
 
 .contact-title {
-  font-family: var(--serif);
-  font-size: clamp(32px, 4vw, 52px);
-  font-weight: 600;
+    font-family: var(--serif);
+  font-size: clamp(36px, 6vw, 60px);
+  font-weight: 700;
+  letter-spacing: -.03em;
+  line-height: .92;
   text-transform: uppercase;
-  letter-spacing:.03em;
-  margin-left: 48px;
+  color: var(--black);
 }
 
 .contact-gray-block img {
@@ -411,12 +428,13 @@ margin-left: 48px;
 }
 
 .contact-line {
+    font-size: 24px;
+  font-weight: 500;
+  line-height: 1.2;
+  color: #444;
   font-family: var(--serif);
-  font-size: clamp(18px, 2vw, 24px);
-  font-weight: 300;
   letter-spacing: .06em;
   line-height: 2;
-  color: var(--black);
 }
 
 .contact-link {
@@ -527,7 +545,7 @@ footer span { font-size:11px; letter-spacing:.08em; color:#999; }
          data-img="" data-label="Animation">
         <span class="stagger-label">Animation</span>
       </a>
-      <a class="stagger-line" href="posters.html"
+      <a class="stagger-line" href="works/posters.html"
          data-img="" data-label="Posters">
         <span class="stagger-label">Posters</span>
       </a>
@@ -565,7 +583,7 @@ footer span { font-size:11px; letter-spacing:.08em; color:#999; }
           <span>— Ballerina</span>
           <span>— Writer</span>
           <span>— Filmmaker</span>
-          <span>— Photographer</span>
+          <span>— Chef</span>
           <!-- duplicated for seamless loop -->
           <span>— Archaeologist</span>
           <span>— Food Critic</span>
@@ -573,17 +591,21 @@ footer span { font-size:11px; letter-spacing:.08em; color:#999; }
           <span>— Ballerina</span>
           <span>— Writer</span>
           <span>— Filmmaker</span>
-          <span>— Photographer</span>
+          <span>— Chef</span>
         </div>
       </div>
     </div>
 
     <div class="about-right reveal">
       <p class="about-text">
-        Theoretically, I am constantly learning, to keep up with the changes. Learning about new softwares, apps, AI tools, arts, filmography. I adapt easily since, I moved 4–5 times since I left my home.<br><br>
-        Theoretically, I am constantly learning, to keep up with the changes. Learning about new softwares, apps, AI tools, arts, filmography. I adapt easily since, I moved 4–5 times since I left my home.<br><br>
-        Theoretically, I am constantly learning, to keep up with the changes. Learning about new softwares, apps, AI tools, arts, filmography. I adapt easily since, I moved 4–5 times since I left my home.<br><br>
-        Theoretically, I am constantly learning, to keep up with the changes. Learning about new softwares, apps, AI tools, arts, filmography. I adapt easily since, I moved 4–5 times s
+        I think life is about bringing something to the table. As a child, I wanted to be an archaeologist, a food critic, a filmmaker, a writer, and many other things in between. 
+        I never saw those ambitions as contradictions. To me, they were different ways of looking at the world. As things change, I try to change with them. I learn, adapt, reconsider, 
+        and occasionally start over. If something doesn't work out, I either approach it from a different angle or move on in search of a better question.<br><br>
+I have never been interested in staying with an idea simply because I started it. Once something is understood, I find myself looking for the next thing waiting to be unfolded. 
+That curiosity shapes the way I work. The two moments I enjoy most in any project are the beginning and the end: the brainstorming and the finished piece. What fascinates
+ me most, however, is everything in between. Sometimes a project develops like the childhood game of whispering a sentence from one person to the next. By the time it 
+ reaches the end, it has transformed into something unexpected. Ideas change, people influence them, accidents happen, and meanings shift. Whether I work alone or with others, 
+ that process of transformation is often the most rewarding part.
       </p>
     </div>
 
@@ -603,7 +625,7 @@ footer span { font-size:11px; letter-spacing:.08em; color:#999; }
   </div>
 
   <div class="contact-details reveal">
-    <p class="contact-line">Email: <a href="mailto:your@email.com" class="contact-link">your@email.com</a></p>
+    <p class="contact-line">Email: <a href="mailto:your@email.com" class="contact-link">aisaszakal@gmail.com</a></p>
     <p class="contact-line">Phone: <a href="tel:+00000000000" class="contact-link">+00 000 000 0000</a></p>
   </div>
 

@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Project Name — Aisa Szakal Blanka</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --black: #0a0a0a;
+  --white: #ffffff;
+  --gray: #D9D9D9;
+  --serif: 'Inter', Georgia, serif;
+  --sans: "EB Garamond", serif;
+  --ease: cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+html { scroll-behavior: smooth; }
+body {
+  background: var(--white);
+  color: var(--black);
+  font-family: var(--sans);
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* ── CURSOR ── */
+#cur  { width:8px; height:8px; background:var(--black); border-radius:50%; position:fixed; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); }
+#cur-r { width:28px; height:28px; border:1px solid var(--black); border-radius:50%; position:fixed; pointer-events:none; z-index:9998; transform:translate(-50%,-50%); opacity:.4; }
+@media(max-width:768px){ #cur,#cur-r{display:none} body{cursor:auto} }
+
+/* ── PRELOADER ── */
+#preloader {
+  position: fixed; inset: 0;
+  background: var(--black);
+  z-index: 2000;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: 40px;
+  pointer-events: none;
+  transition: clip-path 0.9s var(--ease);
+  clip-path: inset(0 0 0 0);
+}
+#preloader.done { clip-path: inset(0 0 100% 0); }
+#pre-num {
+  font-family: var(--serif);
+  font-size: 13px; font-weight: 400;
+  color: rgba(255,255,255,.5);
+  letter-spacing: .1em;
+  font-feature-settings: "tnum";
+}
+#pre-label {
+  font-size: 11px; letter-spacing: .2em; text-transform: uppercase;
+  color: rgba(255,255,255,.25);
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed; top:0; left:0; right:0; height:48px;
+  display:flex; align-items:center; justify-content:space-between;
+  padding: 0 24px;
+  z-index: 500;
+  background: var(--white);
+  border-bottom: 1px solid #e0e0e0;
+}
+.nav-back {
+  font-family: var(--serif); font-size:11px; letter-spacing:.12em;
+  text-transform:uppercase; color:var(--black); text-decoration:none;
+  display:flex; align-items:center; gap:8px; transition:opacity .2s;
+}
+.nav-back:hover { opacity:.5; }
+.nav-back::before { content:'←'; font-size:14px; }
+.nav-title {
+  font-family: var(--serif); font-size:13px; font-weight:600;
+  text-transform:uppercase; letter-spacing:.08em; color:var(--black);
+}
+.nav-links { display:flex; gap:32px; list-style:none; }
+.nav-links a {
+  font-family: var(--serif); font-size:11px; letter-spacing:.12em;
+  text-transform:uppercase; color:var(--black); text-decoration:none; transition:opacity .2s;
+}
+.nav-links a:hover { opacity:.5; }
+
+/* ── HERO ── */
+.hero {
+  padding-top: 48px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* big project title — full width, left aligned like your screenshot */
+.hero-title-block {
+  padding: 48px 24px 0;
+}
+.hero-title {
+  font-family: var(--serif);
+  font-size: clamp(56px, 12vw, 160px);
+  font-weight: 700;
+  letter-spacing: -.03em;
+  line-height: .92;
+  text-transform: uppercase;
+  color: var(--black);
+  overflow: hidden;
+}
+.hero-title .word {
+  display: inline-block;
+  transform: translateY(110%);
+  opacity: 0;
+  transition: transform 0.8s var(--ease), opacity 0.6s ease;
+  margin-right: .12em;
+}
+.hero-title .word.in {
+  transform: translateY(0); opacity: 1;
+}
+
+/* hero intro text — small, left, like your screenshot */
+.hero-intro {
+  padding: 48px 24px 48px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  border-bottom: 1px solid #e0e0e0;
+  opacity: 0;
+  transition: opacity .7s ease .6s;
+}
+.hero-intro.in { opacity: 1; }
+.hero-intro-text {
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.8;
+  color: #444;
+}
+.hero-meta {
+  display: flex; flex-direction: column; justify-content: flex-end; gap: 12px;
+}
+.hero-meta-row {
+  display: flex; gap: 16px;
+}
+.hero-meta-label {
+  font-size: 9px; letter-spacing:.2em; text-transform:uppercase; color:#bbb;
+  width: 64px; flex-shrink:0; padding-top:2px;
+}
+.hero-meta-value {
+  font-size: 13px; color: var(--black); font-weight:400;
+}
+
+/* hero image — full width gray block */
+.hero-image {
+  width: 100%;
+  flex: 1;
+  min-height: 56vh;
+  background: var(--gray);
+  position: relative;
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity .9s ease .3s;
+}
+.hero-image.in { opacity: 1; }
+.hero-image img,
+.hero-image video {
+  width:100%; height:100%; object-fit:cover; display:block;
+}
+.hero-image-placeholder {
+  position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+  font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:#aaa;
+}
+
+/* ── BIG ACCORDION ── */
+/* This is the key section — MY ROLE / THE WORK / OUTCOME as giant clickable words */
+.accordion {
+  border-top: 1px solid #e0e0e0;
+}
+
+.acc-item {
+  border-bottom: 1px ;
+  overflow: hidden;
+}
+
+/* the giant clickable title */
+.acc-trigger {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  padding: 0 24px;
+  cursor: none;
+  position: relative;
+}
+
+.acc-word {
+  display: block;
+  font-family: var(--serif);
+  font-size: clamp(52px, 10vw, 136px);
+  font-weight: 700;
+  letter-spacing: -.03em;
+  line-height: .9;
+  text-transform: uppercase;
+  color: var(--black);
+  padding: 16px 0;
+  transition: color .25s ease, letter-spacing .35s ease;
+  user-select: none;
+}
+
+/* on hover the title stretches out slightly */
+.acc-trigger:hover .acc-word {
+  letter-spacing: -.01em;
+}
+
+/* open state — title gets a subtle indent / color shift */
+.acc-item.open .acc-word {
+  color: var(--black);
+}
+
+/* small plus/minus indicator top-right */
+.acc-indicator {
+  position: absolute;
+  top: 24px; right: 24px;
+  font-size: 24px;
+  font-weight: 300;
+  color: #bbb;
+  transition: transform .4s var(--ease), color .25s;
+  line-height: 1;
+}
+.acc-item.open .acc-indicator {
+  transform: rotate(45deg);
+  color: var(--black);
+}
+
+/* the unfolding content */
+.acc-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.65s var(--ease);
+}
+
+.acc-body-inner {
+  padding: 0 24px 48px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  padding-top: 32px;
+}
+
+.acc-body-text {
+  font-family: var(--sans);
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.85;
+  color: #333;
+}
+
+.acc-body-list {
+  list-style: none;
+  display: flex; flex-direction: column; gap: 14px;
+  padding-top: 4px;
+}
+.acc-body-list li {
+  font-family: var(--sans);
+  font-size: 14px; line-height: 1.7; color: #555;
+  padding-left: 20px; position: relative;
+}
+.acc-body-list li::before {
+  content: '—';
+  position: absolute; left: 0; color: #ccc;
+}
+
+/* ── GALLERY ── */
+.gallery {
+  padding: 80px 24px 100px;
+}
+
+.gallery-heading {
+  text-align: center;
+  margin-bottom: 200px;
+}
+.gallery-heading h2 {
+  font-family: var(--sans); /* EB Garamond — serif, elegant */
+  font-size: clamp(52px, 8vw, 110px);
+  font-weight: 400;
+  font-style: italic;
+  letter-spacing: -.02em;
+  color: var(--black);
+  line-height: 1;
+}
+
+/* FLIP BOOK */
+
+input[type="checkbox"] {
+    display: none;
+}
+
+#flip_book {
+    width: 298px;
+    height: 420px;
+    position: relative;
+    transition-duration: 1s;
+    perspective: 2000px;
+
+}
+#flip_book2 {
+    width: 298px;
+    height: 420px;
+    position: relative;
+    transition-duration: 1s;
+    perspective: 2000px;
+
+}
+
+.booklets {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 300px; /* space between books */
+  flex-wrap: wrap; /* allows mobile stacking */
+  margin-left: 17%;
+
+}
+
+.front_cover,
+.back_cover, .front_cover2,
+.back_cover2 {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 2.5px 5px 5px 2.5px;
+    background-image: url(./assets/images/flip_book_edge_shading.webp);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: #272324;
+    box-shadow: 0 0 5px 0 rgb(25, 25, 25, 0.25);
+}
+
+.front_cover, .front_cover2 {
+    position: absolute;
+    cursor: pointer;
+    transform-origin: center left;
+    transition: transform 0.5s;
+    z-index: 99;
+}
+
+.front_cover label, .front_cover2 label {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    cursor: pointer;
+}
+
+.page, .page2 {
+    width: 288px;
+    height: 400px;
+    position: absolute;
+    top: 10px;
+    left: 1px;
+    border-radius: 0 5px 5px 0;
+    background-color: white;
+    transform-origin: left;
+    transform-style: preserve-3d;
+    transform: rotateY(0deg);
+    transition: 0.5s;
+    box-shadow: 0.9s ease;
+}
+
+.page:hover, .page2:hover {
+    box-shadow: 0 10px 30px rgba(0,0,0,.08);
+}
+.page, .page2 {
+    will-change: transform;
+}
+
+.page::after, .page2::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        to right,
+        rgba(0,0,0,0.12),
+        rgba(0,0,0,0)
+    );
+    opacity: 0;
+    transition: opacity .8s ease;
+    pointer-events: none;
+}
+
+.page:hover::after, .page2:hover::after {
+    opacity: 1;
+}
+
+
+.front_page, .front_page2 {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    backface-visibility: hidden;
+}
+
+.front_page label, .front_page2 label {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    cursor: pointer;
+    z-index: 100;
+}
+
+.back_page, .back_page2 {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    backface-visibility: hidden;
+    transform: rotateY(180deg);
+    z-index: 100;
+}
+
+.back_page label, .back_page2 label {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    cursor: pointer;
+    z-index: 100;
+}
+
+.edge_shading {
+    width: 288px;
+    height: 400px;
+    position: absolute;
+    z-index: 98;
+}
+
+.front_content,.front_content2  {
+    width: 287px;
+    height: 398px;
+    position: absolute;
+    top: 1px;
+    border-radius: 0 5px 5px 0;
+    z-index: 97;
+}
+
+.back_content, .back_content2  {
+    width: 287px;
+    height: 398px;
+    position: absolute;
+    top: 1px;
+    left: 1px;
+    border-radius: 5px 0 0 5px;
+    z-index: 97;
+}
+
+.back_cover, .back_cover2 {
+    position: relative;
+    z-index: -1;
+}
+
+#page1 {
+    z-index: 8;
+}
+
+#page2 {
+    z-index: 5;
+}
+
+#page3 {
+    z-index: 4;
+}
+
+#page4 {
+    z-index: 3;
+}
+
+#page5 {
+    z-index: 2;
+}
+#cover_checkbox:checked~#flip_book {
+    transform: translateX(144px)
+}
+
+#cover_checkbox:checked~#flip_book .front_cover {
+    transform: rotateY(-180deg);
+    transition: transform 1.5s, z-index 0.5s 0.5s;
+    z-index: 1;
+}
+
+#cover_checkbox:checked~#flip_book #cover {
+    width: 80%;
+    height: 80%;
+    position: absolute;
+}
+
+#page1_checkbox:checked~#flip_book #page1 {
+    transform: rotateY(-180deg);
+    z-index: 3;
+}
+
+#page2_checkbox:checked~#flip_book #page2 {
+    transform: rotateY(-180deg);
+    z-index: 4;
+}
+
+#page3_checkbox:checked~#flip_book #page3 {
+    transform: rotateY(-180deg);
+    z-index: 5;
+}
+
+#page4_checkbox:checked~#flip_book #page4 {
+    transform: rotateY(-180deg);
+    z-index: 6;
+}
+
+#page5_checkbox:checked~#flip_book #page5 {
+    transform: rotateY(-180deg);
+    z-index: 9;
+}
+
+
+/* book2 */
+#page11 {
+    z-index: 8;
+}
+
+#page22 {
+    z-index: 5;
+}
+
+
+#cover_checkbox2:checked~#flip_book2 {
+    transform: translateX(144px)
+}
+
+#cover_checkbox2:checked~#flip_book2 .front_cover2 {
+    transform: rotateY(-180deg);
+    transition: transform 1.5s, z-index 0.5s 0.5s;
+    z-index: 1;
+}
+
+#cover_checkbox2:checked~#flip_book2 #cover2 {
+    width: 80%;
+    height: 80%;
+    position: absolute;
+}
+
+#page11_checkbox:checked~#flip_book2 #page11 {
+    transform: rotateY(-180deg);
+    z-index: 3;
+}
+
+#page22_checkbox:checked~#flip_book2 #page22 {
+    transform: rotateY(-180deg);
+    z-index: 4;
+}
+
+
+
+/* book2 end */
+
+
+
+
+
+/* ── NEXT PROJECTS ── */
+.next-projects {
+  border-top: 1px solid #e0e0e0;
+  padding: 64px 24px 80px;
+}
+.next-label {
+  font-size: 9px; letter-spacing:.2em; text-transform:uppercase; color:#999;
+  margin-bottom: 32px;
+}
+.next-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3px;
+}
+.next-card {
+  background: var(--gray);
+  aspect-ratio: 4/3;
+  position: relative;
+  overflow: hidden;
+  text-decoration: none;
+  display: block;
+  cursor: none;
+}
+.next-card-inner {
+  position: absolute; inset:0;
+  transition: transform .6s var(--ease);
+}
+.next-card:hover .next-card-inner { transform: scale(1.04); }
+.next-card-content {
+  position: absolute; inset:0;
+  display: flex; flex-direction: column; justify-content: flex-end;
+  padding: 24px;
+  background: linear-gradient(to top, rgba(0,0,0,.65) 0%, transparent 60%);
+}
+.next-card-cat { font-size:9px; letter-spacing:.2em; text-transform:uppercase; color:rgba(255,255,255,.5); margin-bottom:6px; }
+.next-card-title {
+  font-family: var(--serif); font-size: clamp(18px, 2.2vw, 28px);
+  font-weight: 600; color: var(--white); text-transform: uppercase; letter-spacing:-.01em;
+}
+.next-card-arrow {
+  position: absolute; top:20px; right:20px;
+  font-size:18px; color: rgba(255,255,255,.4);
+  transition: transform .3s ease, color .3s;
+}
+.next-card:hover .next-card-arrow { transform: translate(3px,-3px); color:rgba(255,255,255,.9); }
+
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid #e0e0e0;
+  padding: 20px 24px;
+  display:flex; justify-content:space-between; align-items:center;
+}
+footer span { font-size:11px; letter-spacing:.08em; color:#999; }
+
+/* ── REVEAL ── */
+.reveal { opacity:0; transform:translateY(20px); transition: opacity .7s ease, transform .7s ease; }
+.reveal.in { opacity:1; transform:translateY(0); }
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  #cur,#cur-r { display:none; } body { cursor:auto; }
+  .hero-intro, .acc-body-inner, .next-grid { grid-template-columns:1fr; gap:24px; }
+  .acc-word { font-size: clamp(36px, 12vw, 72px); }
+  .hero-title { font-size: clamp(40px, 14vw, 100px); }
+  .gallery-cols { grid-template-columns: 1fr 1fr; }
+  .gallery-col:nth-child(2) { padding-top: 60px; }
+  .gallery-col:nth-child(3) { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div id="cur"></div>
+<div id="cur-r"></div>
+
+<!-- PRELOADER -->
+<div id="preloader">
+  <span id="pre-num">0%</span>
+  <span id="pre-label">Loading</span>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a href="../index.html" class="nav-back">All Works</a>
+  <span class="nav-title">Posters</span>  <!-- ← change per page -->
+  <ul class="nav-links">
+    <li><a href="../index.html#about">About</a></li>
+    <li><a href="../index.html#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- ══════════════════════════════════
+     HERO
+══════════════════════════════════ -->
+<section class="hero">
+
+  <!-- BIG TITLE -->
+  <div class="hero-title-block">
+    <h1 class="hero-title" id="heroTitle">Posters</h1>
+    <!-- ← change per page -->
+  </div>
+
+  <!-- INTRO TEXT + META -->
+  <div class="hero-intro" id="heroIntro">
+    <p class="hero-intro-text">
+        These projects explore different ways of communicating stories through design. Sometimes that form becomes a poster, 
+        sometimes a magazine, sometimes a booklet. While the formats differ, they all begin with the same question: how can a story, 
+        or a piece of information, be translated into something people can see, understand, and perhaps engage with?<br>
+ 
+While the formats vary, each project required balancing research, visual hierarchy, and storytelling. 
+Together, they reflect my interest in how ideas travel from concept to communication and how visual design can shape how they are received.
+
+    </p>
+    <div class="hero-meta">
+      <div class="hero-meta-row">
+        <span class="hero-meta-label">Category</span>
+        <span class="hero-meta-value">Poster Design, Editorial Design, Information Design </span>  <!-- ← edit -->
+      </div>
+      <div class="hero-meta-row">
+        <span class="hero-meta-label">Year</span>
+        <span class="hero-meta-value">2024 – 2026</span>  <!-- ← edit -->
+      </div>
+      <div class="hero-meta-row">
+        <span class="hero-meta-label">Tools</span>
+        <span class="hero-meta-value">Illustrator, Photoshop, InDesign</span>  <!-- ← edit -->
+      </div>
+    </div>
+  </div>
+
+  <!-- HERO IMAGE / VIDEO -->
+  <div class="hero-image" id="heroImage">
+    <span class="hero-image-placeholder">Your image here</span>
+    <!--
+      Replace with your media:
+      <img src="your-image.jpg" alt="Posters">
+      or
+      <video autoplay muted loop playsinline src="your-video.mp4"></video>
+    -->
+  </div>
+
+</section>
+
+<!-- ══════════════════════════════════
+     BIG ACCORDION
+     MY ROLE / THE WORK / OUTCOME
+     Click the giant word to unfold
+══════════════════════════════════ -->
+<div class="accordion">
+
+  <div class="acc-item" data-acc>
+    <button class="acc-trigger" aria-expanded="false">
+      <span class="acc-word">My Role</span>
+      <span class="acc-indicator"></span>
+    </button>
+    <div class="acc-body">
+      <div class="acc-body-inner">
+        <p class="acc-body-text">
+            Across these projects, I worked as a researcher, writer, and designer. Depending on the format, <br>I was responsible for developing concepts, structuring content, creating layouts, and translating<br> ideas into visual narratives.
+        </p>
+        <!-- <ul class="acc-body-list">
+          <li>Specific responsibility one</li>  
+          <li>Specific responsibility two</li>
+          <li>Specific responsibility three</li>
+          <li>Specific responsibility four</li>
+        </ul> -->
+      </div>
+    </div>
+  </div>
+
+  <div class="acc-item" data-acc>
+    <button class="acc-trigger" aria-expanded="false">
+      <span class="acc-word">The Work</span>
+      <span class="acc-indicator"></span>
+    </button>
+    <div class="acc-body">
+      <div class="acc-body-inner">
+        <p class="acc-body-text">
+            These projects range from posters and publications to editorial and information design. Each one began with a different subject, audience, or objective, but all required balancing storytelling, testing, brainstorming, visual hierarchy, and communication.
+        </p>
+        <ul class="acc-body-list">
+            <li>Poster design for Breda in collaboration with Handpicked Breda.</li>
+
+            <li>Editorial magazine development, including research, interviews, writing, editing, and design.</li>
+            
+            <li>Infographic poster design for an AI-assisted equine integration project.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="acc-item" data-acc>
+    <button class="acc-trigger" aria-expanded="false">
+      <span class="acc-word">Outcome</span>
+      <span class="acc-indicator"></span>
+    </button>
+    <div class="acc-body">
+      <div class="acc-body-inner">
+        <p class="acc-body-text">
+            A collection of posters, publications, and visual experiments. While each project explores a different subject, they all share an interest in translation: turning ideas, stories, and observations into something that can be seen, understood, and experienced by others.
+
+        </p>
+        <!-- <ul class="acc-body-list">
+          <li>Result or impact one</li> 
+          <li>Result or impact two</li>
+          <li>Result or impact three</li>
+        </ul> -->
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══════════════════════════════════
+     GALLERY — 3 column staggered, adcker style
+══════════════════════════════════ -->
+<div class="gallery reveal">
+
+  <div class="gallery-heading">
+    <h2>Gallery</h2>
+  </div>
+<div class="booklets">
+
+    <!-- FLIP BOOK -->
+    <input type="checkbox" id="cover_checkbox">
+    <input type="checkbox" id="page1_checkbox">
+    <input type="checkbox" id="page2_checkbox">
+    <input type="checkbox" id="page3_checkbox">
+    <input type="checkbox" id="page4_checkbox">
+    <input type="checkbox" id="page5_checkbox">
+
+    <div id="flip_book">
+        <!-- <div class="front_cover">
+            <label for="cover_checkbox" id="cover"></label>
+        </div> -->
+
+        <div class="page" id="page1">
+            <div class="front_page">
+                <label for="page1_checkbox"></label>
+                <img class="front_content" src="../assets/breda4.jpg" alt="Front content">
+            </div>
+
+            <div class="back_page">
+                <label for="page1_checkbox"></label>
+                <img class="back_content" src="../assets/breda1.jpg" alt="Back content">
+            </div>
+        </div>
+
+        <div class="page" id="page2">
+            <div class="front_page">
+                <label for="page2_checkbox"></label>
+                <img class="front_content" src="../assets/breda2.jpg" alt="Front content">
+            </div>
+
+            <div class="back_page">
+                <label for="page2_checkbox"></label>
+                <img class="back_content" src="../assets/breda3.jpg" alt="Back content">
+            </div>
+        </div>
+    </div>
+
+        <!-- FLIP BOOK2 -->
+        <input type="checkbox" id="cover_checkbox">
+        <input type="checkbox" id="page11_checkbox">
+        <input type="checkbox" id="page22_checkbox">
+        <input type="checkbox" id="page33_checkbox">
+        <input type="checkbox" id="page44_checkbox">
+        <input type="checkbox" id="page55_checkbox">
+    
+    <div id="flip_book2">
+            <!-- <div class="front_cover">
+                <label for="cover_checkbox" id="cover"></label>
+            </div> -->
+    
+            <div class="page2" id="page11">
+                <div class="front_page2">
+                    <label for="page11_checkbox"></label>
+                    <img class="front_content2" src="../assets/soundreport-Aisa.jpg" alt="Front content">
+                </div>
+    
+                <div class="back_page2">
+                    <label for="page11_checkbox"></label>
+                    <img class="back_content2" src="../assets/soundreport2-Aisa.jpg" alt="Back content">
+                </div>
+            </div>
+    
+            <div class="page2" id="page22">
+                <div class="front_page2">
+                    <label for="page22_checkbox"></label>
+                    <img class="front_content2" src="../assets/soundreport3-Aisa.jpg" alt="Front content">
+                </div>
+    
+                <div class="back_page2">
+                    <label for="page22_checkbox"></label>
+                    <img class="back_content2" src="../assets/soundreport4-Aisa.jpg" alt="Back content">
+                </div>
+            </div>
+    </div>
+</div> 
+</div>
+</div>
+
+<!-- ══════════════════════════════════
+     NEXT PROJECTS
+══════════════════════════════════ -->
+<div class="next-projects reveal">
+  <p class="next-label">Other work</p>
+  <div class="next-grid">
+    <a href="animation.html" class="next-card">
+      <div class="next-card-inner"></div>
+      <div class="next-card-content">
+        <p class="next-card-cat">Motion</p>
+        <p class="next-card-title">Animation</p>
+      </div>
+      <span class="next-card-arrow">↗</span>
+    </a>
+    <a href="videomapping.html" class="next-card">
+      <div class="next-card-inner"></div>
+      <div class="next-card-content">
+        <p class="next-card-cat">Film</p>
+        <p class="next-card-title">Videomapping</p>
+      </div>
+      <span class="next-card-arrow">↗</span>
+    </a>
+  </div>
+</div>
+
+<footer>
+  <span>© 2026 Aisa Szakal Blanka</span>
+  <span>Budapest, HU</span>
+</footer>
+
+<script>
+// ── cursor ──
+const cur  = document.getElementById('cur');
+const curR = document.getElementById('cur-r');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; cur.style.left=mx+'px'; cur.style.top=my+'px'; });
+(function t(){ rx+=(mx-rx)*.13; ry+=(my-ry)*.13; curR.style.left=rx+'px'; curR.style.top=ry+'px'; requestAnimationFrame(t); })();
+
+// ── preloader ──
+const preNum = document.getElementById('pre-num');
+const preEl  = document.getElementById('preloader');
+let n = 0;
+const iv = setInterval(() => {
+  n += Math.floor(Math.random() * 12) + 5;
+  if (n >= 100) {
+    n = 100; clearInterval(iv);
+    setTimeout(() => {
+      preEl.classList.add('done');
+      setTimeout(startHero, 500);
+    }, 200);
+  }
+  preNum.textContent = n + '%';
+}, 55);
+
+// ── hero animation ──
+function startHero() {
+  // split title into words
+  const titleEl = document.getElementById('heroTitle');
+  const raw = titleEl.textContent.trim();
+  titleEl.innerHTML = raw.split(' ').map(w => `<span class="word">${w}</span>`).join(' ');
+  const words = titleEl.querySelectorAll('.word');
+  words.forEach((w, i) => setTimeout(() => w.classList.add('in'), i * 100));
+
+  // fade in intro + image
+  setTimeout(() => {
+    document.getElementById('heroIntro').classList.add('in');
+    document.getElementById('heroImage').classList.add('in');
+  }, words.length * 100 + 100);
+}
+
+// ── accordion ──
+document.querySelectorAll('[data-acc]').forEach(item => {
+  const trigger = item.querySelector('.acc-trigger');
+  const body    = item.querySelector('.acc-body');
+
+  trigger.addEventListener('click', () => {
+    const isOpen = item.classList.contains('open');
+
+    // close all
+    document.querySelectorAll('[data-acc]').forEach(a => {
+      a.classList.remove('open');
+      a.querySelector('.acc-trigger').setAttribute('aria-expanded', 'false');
+      a.querySelector('.acc-body').style.maxHeight = '0';
+    });
+
+    // open this one if it was closed
+    if (!isOpen) {
+      item.classList.add('open');
+      trigger.setAttribute('aria-expanded', 'true');
+      body.style.maxHeight = body.scrollHeight + 'px';
+    }
+  });
+});
+
+// ── scroll reveal ──
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }});
+}, { threshold: 0.06 });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+const responsiveWarning = document.getElementById("responsive-warning");
+// Enable/disable responsive warning.
+const responsiveDesign = false;
+// Mobile width limit.
+const threshold = 768;
+
+// Show or hide modal based on screen size.
+function checkResponsiveState() {
+  const small = window.innerWidth <= threshold;
+
+  if (!responsiveDesign && small) {
+    if (!responsiveWarning.open) {
+      responsiveWarning.showModal();
+      document.body.classList.add("overflow-hidden");
+    }
+  } else {
+    if (responsiveWarning.open) {
+      responsiveWarning.close();
+      document.body.classList.remove("overflow-hidden");
+    }
+  }
+}
+
+// Initial check.
+checkResponsiveState();
+
+// Real-time resize detection.
+window.addEventListener("resize", checkResponsiveState);
+
+</script>
+</body>
+</html>
