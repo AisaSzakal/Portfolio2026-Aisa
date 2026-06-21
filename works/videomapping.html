@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Project Name — Aisa Szakal Blanka</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --black: #0a0a0a;
+  --white: #ffffff;
+  --gray: #D9D9D9;
+  --serif: 'Inter', Georgia, serif;
+  --sans: "EB Garamond", serif;
+  --ease: cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+html { scroll-behavior: smooth; }
+body {
+  background: var(--white);
+  color: var(--black);
+  font-family: var(--sans);
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* ── CURSOR ── */
+#cur  { width:8px; height:8px; background:var(--black); border-radius:50%; position:fixed; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); }
+#cur-r { width:28px; height:28px; border:1px solid var(--black); border-radius:50%; position:fixed; pointer-events:none; z-index:9998; transform:translate(-50%,-50%); opacity:.4; }
+@media(max-width:768px){ #cur,#cur-r{display:none} body{cursor:auto} }
+
+/* ── PRELOADER ── */
+#preloader {
+  position: fixed; inset: 0;
+  background: var(--black);
+  z-index: 2000;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: 40px;
+  pointer-events: none;
+  transition: clip-path 0.9s var(--ease);
+  clip-path: inset(0 0 0 0);
+}
+#preloader.done { clip-path: inset(0 0 100% 0); }
+#pre-num {
+  font-family: var(--serif);
+  font-size: 13px; font-weight: 400;
+  color: rgba(255,255,255,.5);
+  letter-spacing: .1em;
+  font-feature-settings: "tnum";
+}
+#pre-label {
+  font-size: 11px; letter-spacing: .2em; text-transform: uppercase;
+  color: rgba(255,255,255,.25);
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed; top:0; left:0; right:0; height:48px;
+  display:flex; align-items:center; justify-content:space-between;
+  padding: 0 24px;
+  z-index: 500;
+  background: var(--white);
+  border-bottom: 1px solid #e0e0e0;
+}
+.nav-back {
+  font-family: var(--serif); font-size:11px; letter-spacing:.12em;
+  text-transform:uppercase; color:var(--black); text-decoration:none;
+  display:flex; align-items:center; gap:8px; transition:opacity .2s;
+}
+.nav-back:hover { opacity:.5; }
+.nav-back::before { content:'←'; font-size:14px; }
+.nav-title {
+  font-family: var(--serif); font-size:13px; font-weight:600;
+  text-transform:uppercase; letter-spacing:.08em; color:var(--black);
+}
+.nav-links { display:flex; gap:32px; list-style:none; }
+.nav-links a {
+  font-family: var(--serif); font-size:11px; letter-spacing:.12em;
+  text-transform:uppercase; color:var(--black); text-decoration:none; transition:opacity .2s;
+}
+.nav-links a:hover { opacity:.5; }
+
+/* ── HERO ── */
+.hero {
+  padding-top: 48px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* big project title — full width, left aligned like your screenshot */
+.hero-title-block {
+  padding: 48px 24px 0;
+}
+.hero-title {
+  font-family: var(--serif);
+  font-size: clamp(56px, 12vw, 160px);
+  font-weight: 700;
+  letter-spacing: -.03em;
+  line-height: .92;
+  text-transform: uppercase;
+  color: var(--black);
+  overflow: hidden;
+}
+.hero-title .word {
+  display: inline-block;
+  transform: translateY(110%);
+  opacity: 0;
+  transition: transform 0.8s var(--ease), opacity 0.6s ease;
+  margin-right: .12em;
+}
+.hero-title .word.in {
+  transform: translateY(0); opacity: 1;
+}
+
+/* hero intro text — small, left, like your screenshot */
+.hero-intro {
+  padding: 48px 24px 48px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  border-bottom: 1px solid #e0e0e0;
+  opacity: 0;
+  transition: opacity .7s ease .6s;
+}
+.hero-intro.in { opacity: 1; }
+.hero-intro-text {
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.8;
+  color: #444;
+}
+.hero-meta {
+  display: flex; flex-direction: column; justify-content: flex-end; gap: 12px;
+}
+.hero-meta-row {
+  display: flex; gap: 16px;
+}
+.hero-meta-label {
+  font-size: 9px; letter-spacing:.2em; text-transform:uppercase; color:#bbb;
+  width: 64px; flex-shrink:0; padding-top:2px;
+}
+.hero-meta-value {
+  font-size: 13px; color: var(--black); font-weight:400;
+}
+
+/* hero image — full width gray block */
+.hero-image {
+  width: 100%;
+  flex: 1;
+  min-height: 56vh;
+  position: relative;
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity .9s ease .3s;
+}
+.hero-image.in { opacity: 1; }
+.hero-image img,
+.hero-image video {
+  width:100%; height:100%; object-fit:cover; display:block;
+}
+
+
+/* ── BIG ACCORDION ── */
+/* This is the key section — MY ROLE / THE WORK / OUTCOME as giant clickable words */
+
+
+.acc-item {
+  border-bottom: 1px ;
+  overflow: hidden;
+}
+
+/* the giant clickable title */
+.acc-trigger {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  padding: 0 24px;
+  cursor: none;
+  position: relative;
+}
+
+.acc-word {
+  display: block;
+  font-family: var(--serif);
+  font-size: clamp(52px, 10vw, 136px);
+  font-weight: 700;
+  letter-spacing: -.03em;
+  line-height: .9;
+  text-transform: uppercase;
+  color: var(--black);
+  padding: 16px 0;
+  transition: color .25s ease, letter-spacing .35s ease;
+  user-select: none;
+}
+
+/* on hover the title stretches out slightly */
+.acc-trigger:hover .acc-word {
+  letter-spacing: -.01em;
+}
+
+/* open state — title gets a subtle indent / color shift */
+.acc-item.open .acc-word {
+  color: var(--black);
+}
+
+/* small plus/minus indicator top-right */
+.acc-indicator {
+  position: absolute;
+  top: 24px; right: 24px;
+  font-size: 24px;
+  font-weight: 300;
+  color: #bbb;
+  transition: transform .4s var(--ease), color .25s;
+  line-height: 1;
+}
+.acc-item.open .acc-indicator {
+  transform: rotate(45deg);
+  color: var(--black);
+}
+
+/* the unfolding content */
+.acc-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.65s var(--ease);
+}
+
+.acc-body-inner {
+  padding: 0 24px 48px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  padding-top: 32px;
+}
+
+.acc-body-text {
+  font-family: var(--sans);
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.85;
+  color: #333;
+}
+
+.acc-body-list {
+  list-style: none;
+  display: flex; flex-direction: column; gap: 14px;
+  padding-top: 4px;
+}
+.acc-body-list li {
+  font-family: var(--sans);
+  font-size: 14px; line-height: 1.7; color: #555;
+  padding-left: 20px; position: relative;
+}
+.acc-body-list li::before {
+  content: '—';
+  position: absolute; left: 0; color: #ccc;
+}
+
+/* ── GALLERY ── */
+.gallery {
+  padding: 80px 24px 100px;
+}
+
+.gallery-heading {
+  text-align: center;
+  margin-bottom: 200px;
+}
+.gallery-heading h2 {
+  font-family: var(--sans); /* EB Garamond — serif, elegant */
+  font-size: clamp(52px, 8vw, 110px);
+  font-weight: 400;
+  font-style: italic;
+  letter-spacing: -.02em;
+  color: var(--black);
+  line-height: 1;
+}
+
+/* ── VIDEO ITEMS — card + text stacked ── */
+.video-showcase {
+  display: flex;
+  gap: 48px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 40px;
+  margin-bottom: 100px;
+}
+
+.video-item {
+  width: 420px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.video-text {
+  padding: 0 2px;
+}
+.video-text-title {
+  font-family: var(--sans);
+  font-size: 18px;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--black);
+  margin-bottom: 8px;
+}
+.video-text-body {
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.8;
+  color: #555;
+}
+
+@media(max-width:900px){
+  .video-item { width: 100%; max-width: 480px; }
+}
+
+/* ── VIDEO SHOWCASE ── */
+
+.yt-player { position: absolute; inset: 0;     width: 100%;padding-bottom: 23%;}
+.yt-player iframe { width: 100%; height: 100%; display: block; }
+
+/* ── VIDEO CARD — custom controls only, no native ── */
+.video-card {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16/10;
+  overflow: hidden;
+  border-radius: 4px;
+  background: #111;
+  cursor: none;
+}
+
+.video-card video {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+  /* never show native controls */
+}
+
+/* the click-to-play overlay — always on top, always catches clicks */
+.video-overlay {
+  position: absolute; inset: 0;
+  z-index: 10;
+  cursor: none;
+}
+
+/* play icon — centred */
+.video-play {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  pointer-events: none;
+  z-index: 11;
+  /* visible when paused, hidden when playing */
+  opacity: 1;
+  transition: opacity .3s ease;
+}
+.video-card.playing .video-play { opacity: 0; }
+
+/* brief flash of pause icon when you click while playing */
+.video-card .video-pause-flash {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  pointer-events: none;
+  z-index: 11;
+  opacity: 0;
+  transition: opacity .15s ease;
+}
+.video-card .video-pause-flash.show { opacity: 1; }
+
+.video-play-circle {
+  width: 64px; height: 64px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,.7);
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(0,0,0,.2);
+  backdrop-filter: blur(4px);
+}
+.video-play-circle::after {
+  content: '';
+  width: 0; height: 0;
+  border-style: solid;
+  border-width: 9px 0 9px 15px;
+  border-color: transparent transparent transparent #fff;
+  margin-left: 4px;
+}
+
+.video-pause-circle {
+  width: 64px; height: 64px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,.7);
+  display: flex; align-items: center; justify-content: center;
+  gap: 6px;
+  background: rgba(0,0,0,.2);
+  backdrop-filter: blur(4px);
+}
+.video-pause-circle::before,
+.video-pause-circle::after {
+  content: '';
+  width: 4px; height: 16px;
+  background: #fff;
+  border-radius: 2px;
+}
+
+/* progress bar at bottom */
+.video-progress {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 3px;
+  background: rgba(255,255,255,.2);
+  z-index: 12;
+  pointer-events: none;
+}
+.video-progress-fill {
+  height: 100%;
+  width: 0%;
+  background: #fff;
+  transition: width .1s linear;
+}
+
+/* caption */
+.video-caption {
+  position: absolute; bottom: 3px; left: 0; right: 0;
+  padding: 32px 20px 14px;
+  background: linear-gradient(to top, rgba(0,0,0,.7) 0%, transparent 100%);
+  transform: translateY(100%);
+  transition: transform .45s cubic-bezier(0.16,1,0.3,1);
+  pointer-events: none;
+  z-index: 11;
+}
+.video-card:hover .video-caption { transform: translateY(0); }
+
+.video-caption-type {
+  font-size: 9px; letter-spacing:.2em; text-transform:uppercase;
+  color: rgba(255,255,255,.5); margin-bottom: 4px;
+}
+.video-caption-title {
+  font-family: var(--sans);
+  font-size: clamp(15px, 1.6vw, 20px);
+  font-style: italic;
+  color: rgba(255,255,255,.92);
+}
+
+/* ── NEXT PROJECTS ── */
+.next-projects {
+  border-top: 1px solid #e0e0e0;
+  padding: 64px 24px 80px;
+}
+.next-label {
+  font-size: 9px; letter-spacing:.2em; text-transform:uppercase; color:#999;
+  margin-bottom: 32px;
+}
+.next-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3px;
+}
+.next-card {
+  background: var(--gray);
+  aspect-ratio: 4/3;
+  position: relative;
+  overflow: hidden;
+  text-decoration: none;
+  display: block;
+  cursor: none;
+}
+.next-card-inner {
+  position: absolute; inset:0;
+  transition: transform .6s var(--ease);
+}
+.next-card:hover .next-card-inner { transform: scale(1.04); }
+.next-card-content {
+  position: absolute; inset:0;
+  display: flex; flex-direction: column; justify-content: flex-end;
+  padding: 24px;
+  background: linear-gradient(to top, rgba(0,0,0,.65) 0%, transparent 60%);
+}
+.next-card-cat { font-size:9px; letter-spacing:.2em; text-transform:uppercase; color:rgba(255,255,255,.5); margin-bottom:6px; }
+.next-card-title {
+  font-family: var(--serif); font-size: clamp(18px, 2.2vw, 28px);
+  font-weight: 600; color: var(--white); text-transform: uppercase; letter-spacing:-.01em;
+}
+.next-card-arrow {
+  position: absolute; top:20px; right:20px;
+  font-size:18px; color: rgba(255,255,255,.4);
+  transition: transform .3s ease, color .3s;
+}
+.next-card:hover .next-card-arrow { transform: translate(3px,-3px); color:rgba(255,255,255,.9); }
+
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid #e0e0e0;
+  padding: 20px 24px;
+  display:flex; justify-content:space-between; align-items:center;
+}
+footer span { font-size:11px; letter-spacing:.08em; color:#999; }
+
+/* ── REVEAL ── */
+.reveal { opacity:0; transform:translateY(20px); transition: opacity .7s ease, transform .7s ease; }
+.reveal.in { opacity:1; transform:translateY(0); }
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  #cur,#cur-r { display:none; } body { cursor:auto; }
+  .hero-intro, .acc-body-inner, .next-grid { grid-template-columns:1fr; gap:24px; }
+  .acc-word { font-size: clamp(36px, 12vw, 72px); }
+  .hero-title { font-size: clamp(40px, 14vw, 100px); }
+  .gallery-cols { grid-template-columns: 1fr 1fr; }
+  .gallery-col:nth-child(2) { padding-top: 60px; }
+  .gallery-col:nth-child(3) { display: none; }
+}
+</style>
+<style type="text/css">.stf__parent {
+  position: relative;
+  display: block;
+  box-sizing: border-box;
+  transform: translateZ(0);
+
+  -ms-touch-action: pan-y;
+  touch-action: pan-y;
+}
+
+.sft__wrapper {
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.stf__parent canvas {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+}
+
+.stf__block {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  perspective: 2000px;
+}
+
+.stf__item {
+  display: none;
+  position: absolute;
+  transform-style: preserve-3d;
+}
+
+.stf__outerShadow {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.stf__innerShadow {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.stf__hardShadow {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.stf__hardInnerShadow {
+  position: absolute;
+  left: 0;
+  top: 0;
+}</style></head>
+<body>
+
+<div id="cur" style="left: 432px; top: 19px;"></div>
+<div id="cur-r" style="left: 432px; top: 19px;"></div>
+
+<!-- PRELOADER -->
+<div id="preloader" class="done">
+  <span id="pre-num">100%</span>
+  <span id="pre-label">Loading</span>
+</div>
+
+<!-- NAV -->
+<nav>
+    <a href="../index.html" class="nav-back">All Works</a>
+    <span class="nav-title">Posters</span>  <!-- ← change per page -->
+    <ul class="nav-links">
+      <li><a href="../index.html#about">About</a></li>
+      <li><a href="../index.html#contact">Contact</a></li>
+    </ul>
+</nav>
+
+<!-- ══════════════════════════════════
+     HERO
+══════════════════════════════════ -->
+<section class="hero">
+
+  <!-- BIG TITLE -->
+  <div class="hero-title-block">
+    <h1 class="hero-title" id="heroTitle"><span class="word in">Videomapping</span></h1>
+    <!-- ← change per page -->
+  </div>
+
+  <!-- INTRO TEXT + META -->
+  <div class="hero-intro in" id="heroIntro">
+    <p class="hero-intro-text">
+        I first met with the concept of videomapping during my Erasmus semester in Portugal.  Since then, I have been exploring this field, including experimenting with VJing and projection setups, so I can better understand how visuals can respond to rhythm and physical context.
+I am currently learning different videomapping software and developing my technical understanding of projection design. This process is still ongoing, but it is helping me build a foundation for working with spatial storytelling and playing with combining different media in one project.
+While the formats vary, each project requires balancing research, visual hierarchy, and storytelling. Together, they reflect my interest in how ideas travel from concept to communication, and how visual design can shape the way they are received and experienced.
+
+    </p>
+    <div class="hero-meta">
+      <div class="hero-meta-row">
+        <span class="hero-meta-label">Category</span>
+        <span class="hero-meta-value">Videomapping, Spatial Design, Projection-Based Visuals</span>  <!-- ← edit -->
+      </div>
+      <div class="hero-meta-row">
+        <span class="hero-meta-label">Year</span>
+        <span class="hero-meta-value">2026</span>  <!-- ← edit -->
+      </div>
+      <div class="hero-meta-row">
+        <span class="hero-meta-label">Tools</span>
+        <span class="hero-meta-value">PremierPro, Resolum Arena</span>  <!-- ← edit -->
+      </div>
+    </div>
+  </div>
+
+  <!-- HERO IMAGE / VIDEO -->
+  <div class="hero-image in" id="heroImage">
+     <img src="../assets/videomappingmainimg.jpg" alt="Back content">
+  </div>
+
+</section>
+
+<!-- ══════════════════════════════════
+     BIG ACCORDION
+     MY ROLE / THE WORK / OUTCOME
+     Click the giant word to unfold
+══════════════════════════════════ -->
+<div class="accordion">
+
+  <div class="acc-item" data-acc="">
+    <button class="acc-trigger" aria-expanded="false">
+      <span class="acc-word">My Role</span>
+      <span class="acc-indicator"></span>
+    </button>
+    <div class="acc-body">
+      <div class="acc-body-inner">
+        <p class="acc-body-text">
+            Across these projects, I worked as a researcher and visual designer. My responsibilities included developing conceptual frameworks, testing projection approaches, designing motion-based visuals, and translating ideas into spatial and time-based experiences
+        </p>
+        <!-- <ul class="acc-body-list">
+          <li>Specific responsibility one</li>  
+          <li>Specific responsibility two</li>
+          <li>Specific responsibility three</li>
+          <li>Specific responsibility four</li>
+        </ul> -->
+      </div>
+    </div>
+  </div>
+
+  <div class="acc-item" data-acc="">
+    <button class="acc-trigger" aria-expanded="false">
+      <span class="acc-word">The Work</span>
+      <span class="acc-indicator"></span>
+    </button>
+    <div class="acc-body">
+      <div class="acc-body-inner">
+        <p class="acc-body-text">
+            These projects explore experimental approaches to videomapping and projection-based design. Each project began with a different concept or constraint, but all focused on translating ideas into spatial and time-based visual experiences through projection, movement, and atmosphere.
+        </p>
+        <ul class="acc-body-list">
+            <li>Live videomapping performance using Resolume, based on the conceptual connection of three given keywords into a real-time visual composition.</li>
+
+            <li>A project exploring different media forms, where static graphic work was translated into a spatial experience through light and projection.</li>
+        </ul>
+      </div>
+    </div>
+</div>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="acc-item" data-acc="">
+    <button class="acc-trigger" aria-expanded="false">
+      <span class="acc-word">Outcome</span>
+      <span class="acc-indicator"></span>
+    </button>
+    <div class="acc-body">
+      <div class="acc-body-inner">
+        <p class="acc-body-text">
+            These projects represent an ongoing exploration of videomapping and projection-based design. This field has become a significant source of inspiration in my practice. Working with light, space, and movement has opened new ways of thinking about how visual communication can extend beyond static formats.
+            <br><br>
+            Through these experiences, I began to see the potential of projection not only in performative or visual installations, but also in broader contexts such as exhibitions, spatial branding, and experiential marketing. It has expanded my understanding of how design can shape environments and influence the perception of content in real space.
+            </p>
+            
+        <!-- <ul class="acc-body-list">
+          <li>Result or impact one</li> 
+          <li>Result or impact two</li>
+          <li>Result or impact three</li>
+        </ul> -->
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══════════════════════════════════
+     GALLERY — 3 column staggered, adcker style
+══════════════════════════════════ -->
+<div class="gallery reveal in">
+    <div class="gallery-heading">
+      <h2>Gallery</h2>
+    </div>
+  
+    <div class="video-showcase">
+
+        <div class="video-item">
+          <div class="video-card" data-video-card>
+            <div class="yt-player" data-yt-id="FZaDD_ti5yg"></div>
+            <div class="video-overlay" data-video-overlay></div>
+            <!-- <div class="video-play"><div class="video-play-circle"></div></div> -->
+            <!-- <div class="video-pause-flash"><div class="video-pause-circle"></div></div> -->
+            <div class="video-progress"><div class="video-progress-fill" data-progress></div></div>
+            <div class="video-caption">
+              <p class="video-caption-type">Videomapping</p>
+              <p class="video-caption-title">Live Performance - Choice – Overload – Paralysis</p>
+            </div>
+          </div>
+          <div class="video-text">
+            <p class="video-text-title">Videomapping Performance</p>
+            <p class="video-text-body">Choice – Overload – Paralysis is a videomapping project created from the challenge of connecting three self-selected words into a single visual narrative. Inspired by a personal experience familiar to many, the struggle of choosing what to watch in an age of endless streaming options, the project explores how limitless choices can lead to decision fatigue. By combining imagery from acclaimed cinema and popular reality television, the work visualizes the journey from intention to frustration and, ultimately, settling for the easiest choice. The video shown here is only an excerpt; during the presentation, I was behind the camera performing live VJing, mixing and manipulating visuals in real time.</p>
+          </div>
+        </div>
+      
+        <div class="video-item">
+          <div class="video-card" data-video-card>
+            <div class="yt-player" data-yt-id="2n6zwJMIldM"></div>
+            <div class="video-overlay" data-video-overlay></div>
+            <!-- <div class="video-play"><div class="video-play-circle"></div></div> -->
+            <!-- <div class="video-pause-flash"><div class="video-pause-circle"></div></div> -->
+            <div class="video-progress"><div class="video-progress-fill" data-progress></div></div>
+            <div class="video-caption">
+              <p class="video-caption-type">Projection Design</p>
+              <p class="video-caption-title">Static to Spatial — The Individual</p>
+            </div>
+          </div>
+          <div class="video-text">
+            <p class="video-text-title">Mixed Media Project</p>
+            <p class="video-text-body">The individual is a projection-based work exploring the relationship between the individual and the crowd. Developed as an assignment to combine analogue and digital media, the work began with observations of people moving through the city and a curiosity about the stories hidden within their lives. Using self-recorded video footage, graphic compositions, and hand-drawn interventions with oil crayons, I experimented with the interaction between static and moving images. The final outcome combines projection and physical drawings, creating an atmospheric dialogue between analogue and digital media while reflecting on our desire to both stand out and belong.</p>
+          </div>
+        </div>
+      
+    </div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     NEXT PROJECTS
+══════════════════════════════════ -->
+<div class="next-projects reveal">
+    <p class="next-label">Other work</p>
+    <div class="next-grid">
+      <a href="./animation.html" class="next-card">
+        <div class="next-card-inner"></div>
+        <div class="next-card-content">
+          <p class="next-card-cat">Motion</p>
+          <p class="next-card-title">Animation</p>
+        </div>
+        <span class="next-card-arrow">↗</span>
+      </a>
+      <a href="./posters.html" class="next-card">
+        <div class="next-card-inner"></div>
+        <div class="next-card-content">
+          <p class="next-card-cat">Prints</p>
+          <p class="next-card-title">Graphics</p>
+        </div>
+        <span class="next-card-arrow">↗</span>
+      </a>
+    </div>
+</div>
+  
+
+<footer>
+  <span>© 2026 Aisa Szakal Blanka</span>
+  <span>Budapest, HU</span>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/page-flip/dist/js/page-flip.browser.min.js"></script>
+<script>
+    // ── cursor ──
+    const cur  = document.getElementById('cur');
+    const curR = document.getElementById('cur-r');
+    let mx=0,my=0,rx=0,ry=0;
+    document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; cur.style.left=mx+'px'; cur.style.top=my+'px'; });
+    (function t(){ rx+=(mx-rx)*.13; ry+=(my-ry)*.13; curR.style.left=rx+'px'; curR.style.top=ry+'px'; requestAnimationFrame(t); })();
+    
+    // ── preloader ──
+    const preNum = document.getElementById('pre-num');
+    const preEl  = document.getElementById('preloader');
+    let n = 0;
+    const iv = setInterval(() => {
+      n += Math.floor(Math.random() * 12) + 5;
+      if (n >= 100) {
+        n = 100; clearInterval(iv);
+        setTimeout(() => { preEl.classList.add('done'); setTimeout(startHero, 500); }, 200);
+      }
+      preNum.textContent = n + '%';
+    }, 55);
+    
+    // ── hero animation ──
+    function startHero() {
+      const titleEl = document.getElementById('heroTitle');
+      const raw = titleEl.textContent.trim();
+      titleEl.innerHTML = raw.split(' ').map(w => `<span class="word">${w}</span>`).join(' ');
+      const words = titleEl.querySelectorAll('.word');
+      words.forEach((w, i) => setTimeout(() => w.classList.add('in'), i * 100));
+      setTimeout(() => {
+        document.getElementById('heroIntro').classList.add('in');
+        document.getElementById('heroImage').classList.add('in');
+      }, words.length * 100 + 100);
+    }
+    
+    // ── accordion ──
+    document.querySelectorAll('[data-acc]').forEach(item => {
+      const trigger = item.querySelector('.acc-trigger');
+      const body    = item.querySelector('.acc-body');
+      trigger.addEventListener('click', () => {
+        const isOpen = item.classList.contains('open');
+        document.querySelectorAll('[data-acc]').forEach(a => {
+          a.classList.remove('open');
+          a.querySelector('.acc-trigger').setAttribute('aria-expanded', 'false');
+          a.querySelector('.acc-body').style.maxHeight = '0';
+        });
+        if (!isOpen) {
+          item.classList.add('open');
+          trigger.setAttribute('aria-expanded', 'true');
+          body.style.maxHeight = body.scrollHeight + 'px';
+        }
+      });
+    });
+    
+    // ── scroll reveal ──
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }});
+    }, { threshold: 0.06 });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+    
+    // ── native <video> cards ──
+    document.querySelectorAll('[data-video-card]').forEach(card => {
+      const vid = card.querySelector('[data-video]');
+      if (!vid) return;                        // skip YouTube cards
+      const overlay = card.querySelector('[data-video-overlay]');
+      const pauseFl = card.querySelector('.video-pause-flash');
+      const progress = card.querySelector('[data-progress]');
+      vid.controls = false;
+      overlay.addEventListener('click', () => {
+        if (vid.paused) {
+          vid.play().then(() => card.classList.add('playing'));
+        } else {
+          vid.pause();
+          card.classList.remove('playing');
+          pauseFl.classList.add('show');
+          setTimeout(() => pauseFl.classList.remove('show'), 500);
+        }
+      });
+      vid.addEventListener('timeupdate', () => {
+        if (!vid.duration) return;
+        progress.style.width = (vid.currentTime / vid.duration * 100) + '%';
+      });
+      vid.addEventListener('ended', () => {
+        card.classList.remove('playing');
+        progress.style.width = '0%';
+      });
+    });
+    
+    // ── YouTube cards ──
+    var ytPlayers = {};
+    
+    window.onYouTubeIframeAPIReady = function () {
+      document.querySelectorAll('[data-video-card]').forEach((card, i) => {
+        const ytDiv = card.querySelector('.yt-player');
+        if (!ytDiv) return;                    // skip native video cards
+        const videoId = ytDiv.dataset.ytId;
+        const overlay = card.querySelector('[data-video-overlay]');
+        const pauseFl = card.querySelector('.video-pause-flash');
+        const progress = card.querySelector('[data-progress]');
+        const playerId = 'yt-' + i;
+        ytDiv.id = playerId;
+    
+        const player = new YT.Player(playerId, {
+          videoId,
+          playerVars: { controls:0, modestbranding:1, rel:0, iv_load_policy:3, disablekb:1, playsinline:1 },
+          events: {
+            onStateChange(e) {
+              if (e.data === YT.PlayerState.PLAYING) {
+                card.classList.add('playing');
+              } else {
+                card.classList.remove('playing');
+                if (e.data === YT.PlayerState.ENDED) progress.style.width = '0%';
+              }
+            }
+          }
+        });
+    
+        ytPlayers[playerId] = player;
+    
+        setInterval(() => {
+          try {
+            const d = player.getDuration();
+            if (d > 0) progress.style.width = (player.getCurrentTime() / d * 100) + '%';
+          } catch (_) {}
+        }, 250);
+    
+        overlay.addEventListener('click', () => {
+          try {
+            if (player.getPlayerState() === YT.PlayerState.PLAYING) {
+              player.pauseVideo();
+              pauseFl.classList.add('show');
+              setTimeout(() => pauseFl.classList.remove('show'), 500);
+            } else {
+              player.playVideo();
+            }
+          } catch (_) {}
+        });
+      });
+    };
+    
+    // ── inject YouTube API (this line was missing its src!) ──
+    const ytScript = document.createElement('script');
+    ytScript.src = 'https://www.youtube.com/iframe_api';
+    document.head.appendChild(ytScript);
+    </script>
+</body></html>

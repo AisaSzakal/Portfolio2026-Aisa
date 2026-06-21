@@ -203,11 +203,7 @@ nav.scrolled { border-color: #e0e0e0; }
 }
 
 /* staggered diagonal lines + labels */
-.works-stagger {
-  position: relative;
-  height: 400px;
-  margin: 16px 24px 40px;
-}
+
 
 .stagger-line {
   position: absolute;
@@ -215,11 +211,19 @@ nav.scrolled { border-color: #e0e0e0; }
   width: 25%;
   border-top: 3px solid var(--black);
 }
+.works-stagger {
+  position: relative;
+  height: 300px;
+  margin: 16px -23px 40px;
+}
 
-.stagger-line:nth-child(1) { left:75%;    bottom: 140px; }
-.stagger-line:nth-child(2) { left:50%;   bottom: 90px; }
-.stagger-line:nth-child(3) { left:25%;   bottom: 44px; }
-.stagger-line:nth-child(4) { left:0%;   bottom: 0px; border-top-width:0; border-bottom: 3px solid var(--black); }
+.stagger-line:nth-child(1) { left: 0%; bottom: 128px; width: 57%; }
+.stagger-line:nth-child(2) { left: 21%; bottom: 64px;   width: 57%; }
+.stagger-line:nth-child(3) { left: 43%; bottom: 0px;       width: 57%; border-top-width:0; border-bottom: 3px solid var(--black); }
+
+.stagger-line:nth-child(1) { left: 66%; bottom: 180px; }
+.stagger-line:nth-child(2) { left: 33%; bottom: 90px; }
+.stagger-line:nth-child(3) { left: 0%;  bottom: 0px; border-top-width:0; border-bottom: 3px solid var(--black); }
 
 
 .stagger-line:nth-child(1) .stagger-label { left:0; }
@@ -522,33 +526,36 @@ footer span { font-size:11px; letter-spacing:.08em; color:#999; }
      SECTION 2 — WORKS
 ════════════════════════════════ -->
 <section class="s-works" id="works">
+  <div class="stagger-hover-img" id="hoverImg">
+    <img id="hoverImgEl" src="" alt="" style="display:none">
+    <div class="img-label" id="hoverLabel"></div>
+    <div class="img-placeholder" id="hoverPlaceholder"></div>
+  </div>
 
     <div class="works-title-row reveal">
       <h2 class="works-title">Works</h2>
     </div>
   
     <div class="works-stagger reveal">
-      <!--
-        data-img  = path to your image for that category (add when ready)
-        data-label = caption shown on the image
-        href       = page it links to
-      -->
-      <a class="stagger-line" href="podcast.html"
-         data-img="" data-label="Podcast">
-        <span class="stagger-label">Podcast</span>
-      </a>
-      <a class="stagger-line" href="videomapping.html"
-         data-img="" data-label="Videomapping">
+
+      <a class="stagger-line" href="works/videomapping.html"
+         data-img="./assets/videomappingmainimg.jpg"
+         data-label="Videomapping">
         <span class="stagger-label">Videomapping</span>
       </a>
-      <a class="stagger-line" href="animation.html"
-         data-img="" data-label="Animation">
+    
+      <a class="stagger-line" href="works/animation.html"
+         data-img="./assets/animationmainimg.jpg"
+         data-label="Animation">
         <span class="stagger-label">Animation</span>
       </a>
+    
       <a class="stagger-line" href="works/posters.html"
-         data-img="" data-label="Posters">
-        <span class="stagger-label">Posters</span>
+         data-img="./assets/postermainimg.jpg"
+         data-label="Posters">
+        <span class="stagger-label">Prints</span>
       </a>
+    
     </div>
   
   </section>
@@ -572,7 +579,7 @@ footer span { font-size:11px; letter-spacing:.08em; color:#999; }
       <p class="about-subtitle">Everything I<br>wanted to be:</p>
 
       <div class="about-photos">
-        <img src="./assets/me3.jpg" alt="Main Image">
+        <img src="../assets/me3.jpg" alt="Main Image">
       </div>
 
       <div class="about-list">
@@ -621,12 +628,12 @@ That curiosity shapes the way I work. The two moments I enjoy most in any projec
   </div>
 
   <div class="contact-gray-block reveal">
-    <img src="./assets/IMG_9193.jpeg" alt="Main Image">
+    <img src="../assets/IMG_9193.jpeg" alt="Main Image">
   </div>
 
   <div class="contact-details reveal">
     <p class="contact-line">Email: <a href="mailto:your@email.com" class="contact-link">aisaszakal@gmail.com</a></p>
-    <p class="contact-line">Phone: <a href="tel:+00000000000" class="contact-link">+00 000 000 0000</a></p>
+    <p class="contact-line">Phone: <a href="tel:+00000000000" class="contact-link">+31639686580</a></p>
   </div>
 
 </section>
