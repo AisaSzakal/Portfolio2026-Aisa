@@ -555,8 +555,6 @@ body.projection-mode .painting-tile--framed { background: var(--black); }
   <span id="pre-label">Loading</span>
 </div>
 
-
-
 <!-- NAV -->
 <nav>
     <a href="../index.html" class="nav-back">All Works</a>
@@ -605,7 +603,6 @@ body.projection-mode .painting-tile--framed { background: var(--black); }
   <div class="hero-image in" id="heroImage">
     <img src="../assets/extrasmainimg.jpg" alt="Back content">
  </div>
-  </div>
 
 </section>
 
@@ -669,19 +666,19 @@ body.projection-mode .painting-tile--framed { background: var(--black); }
     <div class="painting-tile painting-tile--framed">
         <div class="painting-projection">
         <video muted loop playsinline>
-            <source src="/assets/cars_2.mp4" type="video/mp4">
+            <source src="../assets/cars_2.mp4" type="video/mp4">
         </video>
         </div>
-        <img src="/assets/oilpaint2.png" alt="Hitchhiking, oil on canvas">
+        <img src="../assets/oilpaint2.png" alt="Hitchhiking, oil on canvas">
     </div>
     <div class="painting-tile3">
-        <img src="/assets/oilpaint3.png" alt="Street food vendor, oil on canvas">
+        <img src="../assets/oilpaint3.png" alt="Street food vendor, oil on canvas">
     </div>
     <div class="painting-tile">
-        <img src="/assets/oilpaint1.jpeg" alt="Street food vendor, oil on canvas">
+        <img src="../assets/oilpaint1.jpeg" alt="Street food vendor, oil on canvas">
         <div class="painting-projection">
         <video muted loop playsinline>
-            <source src="/assets/faomki.mp4" type="video/mp4">
+            <source src="../assets/faomki.mp4" type="video/mp4">
         </video>
         </div>
     </div>
@@ -694,7 +691,7 @@ body.projection-mode .painting-tile--framed { background: var(--black); }
     <div class="prism-card prism-blue" id="prismCoffee" tabindex="0" role="button" aria-label="Coffee recommender app — click to read more">
       <div class="prism-inner">
         <div class="prism-face prism-front">
-          <img src="/assets/coffebean.png" alt="Coffee recommender app interface">
+          <img src="../assets/coffebean.png" alt="Coffee recommender app interface">
           <span class="prism-hint">Click to read →</span>
         </div>
         <div class="prism-face prism-back">
@@ -713,7 +710,7 @@ body.projection-mode .painting-tile--framed { background: var(--black); }
     <div class="prism-card prism-green" id="prismBook" tabindex="0" role="button" aria-label="Mindkét Oldalról Sz. book — click to read more">
       <div class="prism-inner">
         <div class="prism-face prism-front">
-          <img src="/assets/aikonyvdemo.jpg" alt="Mindkét Oldalról Sz. book spread">
+          <img src="../assets/aikonyvdemo.jpg" alt="Mindkét Oldalról Sz. book spread">
           <span class="prism-hint">Click to read →</span>
         </div>
         <div class="prism-face prism-back">
@@ -736,27 +733,28 @@ body.projection-mode .painting-tile--framed { background: var(--black); }
 </div>
 
 <div class="next-projects reveal">
-    <p class="next-label">Other work</p>
-    <div class="next-grid">
-      <a href="../works/animation.html" class="next-card">
-        <div class="next-card-inner"><img src="../assets/animationmainimg.jpg" alt="Animation"></div>
-        <div class="next-card-content">
-          <p class="next-card-cat">motion</p>
-          <p class="next-card-title">Animation</p>
-        </div>
-        <span class="next-card-arrow">↗</span>
-      </a>
-      <a href="../works/videomapping.html" class="next-card">
-        <div class="next-card-inner"><img src="../assets/videomappingmainimg.jpg" alt="Videomapping"></div>
-        <div class="next-card-content">
-          <p class="next-card-cat">film</p>
-          <p class="next-card-title">Videomapping</p>
-        </div>
-        <span class="next-card-arrow">↗</span>
-      </a>
-    </div>
+  <p class="next-label">Other work</p>
+  <div class="next-grid">
+    <a href="../works/animation.html" class="next-card">
+      <div class="next-card-inner"></div>
+      <div class="next-card-content">
+        <p class="next-card-cat">motion</p>
+        <p class="next-card-title">Animation</p>
+        <img src="../assets/animationmainimg.jpg" alt="Back content">
+      </div>
+      <span class="next-card-arrow">↗</span>
+    </a>
+    <a href="../works/videomapping.html" class="next-card">
+      <div class="next-card-inner"></div>
+      <div class="next-card-content">
+        <p class="next-card-cat">film</p>
+        <p class="next-card-title">Videomapping</p>
+        <img src="../assets/videomappingmainimg.jpg" alt="Back content">
+      </div>
+      <span class="next-card-arrow">↗</span>
+    </a>
+  </div>
 </div>
-  
 
 <footer>
   <span>© 2026 Aisa Szakal Blanka</span>
@@ -764,7 +762,7 @@ body.projection-mode .painting-tile--framed { background: var(--black); }
 </footer>
 
 
-<script src="https://cdn.jsdelivr.net/npm/page-flip/dist/js/page-flip.browser.min.js"></script>
+
 <script>
 
 const preNum = document.getElementById('pre-num');
@@ -865,6 +863,6 @@ if (lightSwitch) {
 }
 
 </script>
-
+<script src="shared-base.js"></script>
 
 </body></html>
