@@ -217,19 +217,12 @@ nav.scrolled { border-color: #e0e0e0; }
   margin: 16px -23px 40px;
 }
 
-.stagger-line:nth-child(1) { left: 0%; bottom: 128px; width: 57%; }
-.stagger-line:nth-child(2) { left: 21%; bottom: 64px;   width: 57%; }
-.stagger-line:nth-child(3) { left: 43%; bottom: 0px;       width: 57%; border-top-width:0; border-bottom: 3px solid var(--black); }
 
-.stagger-line:nth-child(1) { left: 66%; bottom: 180px; }
-.stagger-line:nth-child(2) { left: 33%; bottom: 90px; }
-.stagger-line:nth-child(3) { left: 0%;  bottom: 0px; border-top-width:0; border-bottom: 3px solid var(--black); }
+.stagger-line:nth-child(1) { left: 66%; bottom: 270px; width: 35%; }
+.stagger-line:nth-child(2) { left: 44%; bottom: 180px; width: 35%; }
+.stagger-line:nth-child(3) { left: 22%; bottom: 90px;  width: 35%; }
+.stagger-line:nth-child(4) { left: 0%;  bottom: 0px;   width: 35%; border-top-width: 0; border-bottom: 3px solid var(--black); }
 
-
-.stagger-line:nth-child(1) .stagger-label { left:0; }
-.stagger-line:nth-child(2) .stagger-label { left:0; }
-.stagger-line:nth-child(3) .stagger-label { left:0; }
-.stagger-line:nth-child(4) .stagger-label { left:0; }
 
 /* the visible line is a pseudo-element so we can animate it independently */
 .stagger-line::before {
@@ -479,12 +472,187 @@ footer span { font-size:11px; letter-spacing:.08em; color:#999; }
   .about-photos { max-width:280px; }
   .stagger-hover-img { display: none; }
 }
+
+/* ============ PROJECTION MODE ============ */
+/* ============ LIGHT SWITCH (ball + rod) ============ */
+.light-switch-wrap {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 600;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  cursor: pointer;
+  user-select: none;
+}
+
+#dim-overlay {
+  position: fixed;
+  inset: 0;
+  background: #05050a;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 400;
+  transition: opacity 1.3s ease;
+}
+body.projection-mode #dim-overlay { opacity: .82; } /* never fully black */
+
+#projection-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 450;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 1.4s ease .3s;
+  mix-blend-mode: screen;
+  overflow: hidden;
+}
+body.projection-mode #projection-layer { opacity: 1; }
+
+.switch-label {
+  font-family: var(--serif);
+  font-size: 6px;
+  font-weight: 700;
+  letter-spacing: .18em;
+  color: #bbb;
+  transition: color .5s ease;
+}
+.switch-label.on  { color: var(--black); }
+body.projection-mode .switch-label.on  { color: #777; }
+body.projection-mode .switch-label.off { color: var(--white); }
+
+.switch-track {
+    position: relative;
+    width: 22px;
+    height: 45px;
+    padding: 2px;
+    border-radius: 4px;
+    background: linear-gradient(155deg, #fdfcf8 0%, #f1f0ed 55%, #ebe9e5 100%);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .11), 0 6px 14px rgb(126 118 118 / 20%), inset 0 1px 0 rgb(206 206 206 / 65%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+
+    transition: box-shadow .5s ease;
+}
+
+body.projection-mode .switch-track {
+  background: linear-gradient(155deg, #3a3a3a 0%, #232323 55%, #151515 100%);
+  box-shadow:
+    0 1px 2px rgba(0,0,0,.4),
+    0 6px 14px rgba(0,0,0,.45),
+    inset 0 1px 0 rgba(255,255,255,.08);
+}
+
+#projection-graphic {
+  position: absolute;
+  width: 100%;
+  filter: brightness(1.5) contrast(1.15) blur(.3px);
+  opacity: .95;
+  animation: projFlicker 3.4s infinite ease-in-out, projDrift 16s infinite ease-in-out;
+}
+
+#projection-shadow {
+  position: fixed;
+  inset: 0;
+  z-index: 460; /* above #projection-layer's 450 */
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .6s ease;
+  background: radial-gradient(
+    circle at var(--mx, 50%) var(--my, 50%),
+    rgba(137, 129, 129, 0.55) 0,
+    rgba(80, 79, 79, 0.28) 90px,
+    rgba(28, 27, 27, 0) 220px
+  );
+}
+
+body.projection-mode #projection-shadow { opacity: 1; }
+
+/* the ball */
+
+.switch-screw {
+  width: 3px; 
+  height: 3px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: radial-gradient(circle at 35% 30%, #f0f0f0, #8c8c8c 60%, #565656 100%);
+  position: relative;
+}
+
+.switch-screw::after {
+  content: '';
+  position: absolute; top: 50%; left: 50%;
+  width: 5px; height: 1px; background: rgba(0,0,0,.45);
+  transform: translate(-50%,-50%) rotate(35deg);
+}
+
+.switch-knob {
+    width: 4px;
+    height: 18px;
+    border-radius: 2px;
+    background: linear-gradient(180deg, #fdfcf8 0%, #c1bbae 100%);
+    box-shadow: 0 2px 3px rgba(0, 0, 0, .45), inset 0 1px 0 rgb(219 198 198 / 60%);
+    transform: rotateX(-26deg);
+    transition: transform .45s cubic-bezier(.4, 0, .2, 1), background .45s ease;
+}
+
+body.projection-mode .switch-knob {
+  transform: rotateX(26deg);
+  background: linear-gradient(180deg, #4a4a4a 0%, #2b2b2b 100%);
+}
+
+
+#projection-graphic {
+  position: absolute;
+  width: 100%;
+  filter: blur(.3px) contrast(1.05);
+  opacity: .92;
+  animation: projFlicker 3.4s infinite ease-in-out, projDrift 16s infinite ease-in-out;
+}
+@keyframes projFlicker {
+  0%, 100% { opacity: .9; }
+  46% { opacity: .78; }
+  50% { opacity: .96; }
+  54% { opacity: .82; }
+}
+@keyframes projDrift {
+  0%   { transform: translate(0,0) rotate(0deg) scale(1); }
+  50%  { transform: translate(14px,-8px) rotate(.3deg) scale(1.01); }
+  100% { transform: translate(0,0) rotate(0deg) scale(1); }
+}
+
 </style>
 </head>
 <body>
 
 <div id="cur"></div>
 <div id="cur-r"></div>
+<div class="light-switch-wrap" id="lightSwitch" role="button" aria-label="Toggle projection lighting">
+    
+  <div class="switch-track">
+      
+    <div class="switch-screw"></div>
+    <span class="switch-label on">ON</span>
+    <div class="switch-window"><div class="switch-knob"></div></div>
+    <span class="switch-label off">OFF</span>
+    <div class="switch-screw"></div>
+    
+  </div>
+  
+</div>
+
+<!-- Projection---------- -->
+<div id="dim-overlay"></div>
+<div id="projection-shadow"></div>
+<div id="projection-layer">
+  <video id="projection-graphic" muted playsinline>
+    <source src="./assets/page2.mp4" type="video/mp4">
+  </video>
+</div>
 
 <!-- FIXED NAV -->
 <nav id="nav">
@@ -538,6 +706,12 @@ footer span { font-size:11px; letter-spacing:.08em; color:#999; }
   
     <div class="works-stagger reveal">
 
+      <a class="stagger-line" href="works/extras.html"
+        data-img="./assets/extrasmainimg.jpg"  
+        data-label="Extras">
+        <span class="stagger-label">Extras</span>
+      </a>
+
       <a class="stagger-line" href="works/videomapping.html"
          data-img="./assets/videomappingmainimg.jpg"
          data-label="Videomapping">
@@ -555,6 +729,8 @@ footer span { font-size:11px; letter-spacing:.08em; color:#999; }
          data-label="Posters">
         <span class="stagger-label">Prints</span>
       </a>
+
+      
     
     </div>
   
@@ -644,6 +820,7 @@ That curiosity shapes the way I work. The two moments I enjoy most in any projec
 </footer>
 
 <script>
+
 // cursor
 const cur = document.getElementById('cur');
 const curR = document.getElementById('cur-r');
@@ -666,6 +843,37 @@ const io = new IntersectionObserver(entries=>{
   entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }});
 },{threshold:0.08});
 els.forEach(el=>io.observe(el));
+
+// projecting ------------------------
+
+
+const vid = document.getElementById('projection-graphic');
+const loopStart = 1.96; // seconds — where the loop segment begins
+
+vid.playbackRate = 0.35;
+
+vid.addEventListener('ended', () => {
+  vid.currentTime = loopStart;
+  vid.play();
+});
+// projecting mouse ------------------------ maybe we can take this out later
+document.addEventListener('mousemove', e => {
+  if (!document.body.classList.contains('projection-mode')) return;
+  const xPct = (e.clientX / window.innerWidth) * 100;
+  const yPct = (e.clientY / window.innerHeight) * 100;
+  document.documentElement.style.setProperty('--mx', xPct + '%');
+  document.documentElement.style.setProperty('--my', yPct + '%');
+});
+
+document.getElementById('lightSwitch').addEventListener('click', () => {
+  const isOn = document.body.classList.toggle('projection-mode');
+  if (isOn) {
+    vid.currentTime = 0;
+    vid.play();
+  } else {
+    vid.pause();
+  }
+});
 
 // ── stagger hover image ──
 const hoverImg    = document.getElementById('hoverImg');

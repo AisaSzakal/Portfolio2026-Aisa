@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Project Name — Aisa Szakal Blanka</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="shared-base.css">
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+<style>
+
+
+/* ── PRELOADER ── */
+#preloader {
+  position: fixed; inset: 0;
+  background: var(--black);
+  z-index: 2000;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: 40px;
+  pointer-events: none;
+  transition: clip-path 0.9s var(--ease);
+  clip-path: inset(0 0 0 0);
+}
+#preloader.done { clip-path: inset(0 0 100% 0); }
+#pre-num {
+  font-family: var(--serif);
+  font-size: 13px; font-weight: 400;
+  color: rgba(255,255,255,.5);
+  letter-spacing: .1em;
+  font-feature-settings: "tnum";
+}
+#pre-label {
+  font-size: 11px; letter-spacing: .2em; text-transform: uppercase;
+  color: rgba(255,255,255,.25);
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed; top:0; left:0; right:0; height:48px;
+  display:flex; align-items:center; justify-content:space-between;
+  padding: 0 24px;
+  z-index: 500;
+  background: var(--white);
+  border-bottom: 1px solid #e0e0e0;
+}
+.nav-back {
+  font-family: var(--serif); font-size:11px; letter-spacing:.12em;
+  text-transform:uppercase; color:var(--black); text-decoration:none;
+  display:flex; align-items:center; gap:8px; transition:opacity .2s;
+}
+.nav-back:hover { opacity:.5; }
+.nav-back::before { content:'←'; font-size:14px; }
+.nav-title {
+  font-family: var(--serif); font-size:13px; font-weight:600;
+  text-transform:uppercase; letter-spacing:.08em; color:var(--black);
+}
+.nav-links { display:flex; gap:32px; list-style:none; }
+.nav-links a {
+  font-family: var(--serif); font-size:11px; letter-spacing:.12em;
+  text-transform:uppercase; color:var(--black); text-decoration:none; transition:opacity .2s;
+}
+.nav-links a:hover { opacity:.5; }
+
+/* ── HERO ── */
+.hero {
+  padding-top: 48px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* big project title — full width, left aligned like your screenshot */
+.hero-title-block {
+  padding: 48px 24px 0;
+}
+.hero-title {
+  font-family: var(--serif);
+  font-size: clamp(56px, 12vw, 160px);
+  font-weight: 700;
+  letter-spacing: -.03em;
+  line-height: .92;
+  text-transform: uppercase;
+  color: var(--black);
+  overflow: hidden;
+}
+.hero-title .word {
+  display: inline-block;
+  transform: translateY(110%);
+  opacity: 0;
+  transition: transform 0.8s var(--ease), opacity 0.6s ease;
+  margin-right: .12em;
+}
+.hero-title .word.in {
+  transform: translateY(0); opacity: 1;
+}
+
+/* hero intro text — small, left, like your screenshot */
+.hero-intro {
+  padding: 48px 24px 48px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  border-bottom: 1px solid #e0e0e0;
+  opacity: 0;
+  transition: opacity .7s ease .6s;
+}
+.hero-intro.in { opacity: 1; }
+.hero-intro-text {
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.8;
+  color: #444;
+}
+.hero-meta {
+  display: flex; flex-direction: column; justify-content: flex-end; gap: 12px;
+}
+.hero-meta-row {
+  display: flex; gap: 16px;
+}
+.hero-meta-label {
+  font-size: 9px; letter-spacing:.2em; text-transform:uppercase; color:#bbb;
+  width: 64px; flex-shrink:0; padding-top:2px;
+}
+.hero-meta-value {
+  font-size: 13px; color: var(--black); font-weight:400;
+}
+
+/* hero image — full width gray block */
+.hero-image {
+  width: 100%;
+  flex: 1;
+  min-height: 56vh;
+  position: relative;
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity .9s ease .3s;
+  margin-bottom: 2%;
+}
+.hero-image.in { opacity: 1; }
+.hero-image img,
+.hero-image video {
+  width:100%; height:100%; object-fit:cover; display:block;
+}
+
+
+/* ── BIG ACCORDION ── */
+.acc-item {
+  border-bottom: 1px ;
+  overflow: hidden;
+}
+.acc-trigger {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  padding: 0 24px;
+  cursor: none;
+  position: relative;
+}
+.acc-word {
+  display: block;
+  font-family: var(--serif);
+  font-size: clamp(52px, 10vw, 136px);
+  font-weight: 700;
+  letter-spacing: -.03em;
+  line-height: .9;
+  text-transform: uppercase;
+  color: var(--black);
+  padding: 16px 0;
+  transition: color .25s ease, letter-spacing .35s ease;
+  user-select: none;
+}
+.acc-trigger:hover .acc-word {
+  letter-spacing: -.01em;
+}
+.acc-item.open .acc-word {
+  color: var(--black);
+}
+.acc-indicator {
+  position: absolute;
+  top: 24px; right: 24px;
+  font-size: 24px;
+  font-weight: 300;
+  color: #bbb;
+  transition: transform .4s var(--ease), color .25s;
+  line-height: 1;
+}
+.acc-item.open .acc-indicator {
+  transform: rotate(45deg);
+  color: var(--black);
+}
+.acc-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.65s var(--ease);
+}
+.acc-body-inner {
+  padding: 0 24px 48px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  padding-top: 32px;
+}
+.acc-body-text {
+  font-family: var(--sans);
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.85;
+  color: #333;
+}
+.acc-body-list {
+  list-style: none;
+  display: flex; flex-direction: column; gap: 14px;
+  padding-top: 4px;
+}
+.acc-body-list li {
+  font-family: var(--sans);
+  font-size: 14px; line-height: 1.7; color: #555;
+  padding-left: 20px; position: relative;
+}
+.acc-body-list li::before {
+  content: '—';
+  position: absolute; left: 0; color: #ccc;
+}
+
+.light-switch-wrap {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 600;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  cursor: pointer;
+  user-select: none;
+}
+
+#dim-overlay {
+  position: fixed;
+  inset: 0;
+  background: #05050aa8;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 400;
+  transition: opacity 1.3s ease;
+}
+body.projection-mode #dim-overlay { opacity: .82; } /* never fully black */
+
+body.projection-mode { opacity: 1; }
+
+
+.switch-label.on  { color: var(--black); }
+body.projection-mode .switch-label.on  { color: #777; }
+body.projection-mode .switch-label.off { color: var(--white); }
+
+.switch-label {
+  font-family: var(--serif);
+  font-size: 6px;
+  font-weight: 700;
+  letter-spacing: .18em;
+  color: #bbb;
+  transition: color .5s ease;
+}
+.switch-label.on  { color: var(--black); }
+body.projection-mode .switch-label.on  { color: #999; }
+body.projection-mode .switch-label.off { color: #eee; }
+ 
+/* wall-mounted plate — screws top and bottom, a recessed window, and a
+   paddle that physically pivots between ON (up) and OFF (down) */
+.switch-track {
+    position: relative;
+    width: 22px;
+    height: 45px;
+    padding: 2px;
+    border-radius: 4px;
+    background: linear-gradient(155deg, #fdfcf8 0%, #f1f0ed 55%, #ebe9e5 100%);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .11), 0 6px 14px rgb(126 118 118 / 20%), inset 0 1px 0 rgb(206 206 206 / 65%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+
+    transition: box-shadow .5s ease;
+}
+
+body.projection-mode .switch-track {
+  background: linear-gradient(155deg, #3a3a3a 0%, #232323 55%, #151515 100%);
+  box-shadow:
+    0 1px 2px rgba(0,0,0,.4),
+    0 6px 14px rgba(0,0,0,.45),
+    inset 0 1px 0 rgba(255,255,255,.08);
+}
+ 
+.switch-screw {
+  width: 3px; 
+  height: 3px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: radial-gradient(circle at 35% 30%, #f0f0f0, #8c8c8c 60%, #565656 100%);
+  position: relative;
+}
+
+.switch-screw::after {
+  content: '';
+  position: absolute; top: 50%; left: 50%;
+  width: 5px; height: 1px; background: rgba(0,0,0,.45);
+  transform: translate(-50%,-50%) rotate(35deg);
+}
+
+#projection-shadow {
+  position: fixed;
+  inset: 0;
+  z-index: 460; /* above #projection-layer's 450 */
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .6s ease;
+  background: radial-gradient(
+    circle at var(--mx, 50%) var(--my, 50%),
+    rgba(137, 129, 129, 0.55) 0,
+    rgba(80, 79, 79, 0.28) 90px,
+    rgba(28, 27, 27, 0.476) 220px
+  );
+}
+
+body.projection-mode #projection-shadow { opacity: 1; }
+
+/* the ball */
+switch-window {
+  width: 20px; height: 36px;
+  background: #232221;
+  border-radius: 2px;
+  box-shadow: inset 0 2px 5px rgba(0,0,0,.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 140px;
+}
+ 
+/* the paddle */
+.switch-knob {
+    width: 4px;
+    height: 18px;
+    border-radius: 2px;
+    background: linear-gradient(180deg, #fdfcf8 0%, #c1bbae 100%);
+    box-shadow: 0 2px 3px rgba(0, 0, 0, .45), inset 0 1px 0 rgb(219 198 198 / 60%);
+    transform: rotateX(-26deg);
+    transition: transform .45s cubic-bezier(.4, 0, .2, 1), background .45s ease;
+}
+
+body.projection-mode .switch-knob {
+  transform: rotateX(26deg);
+  background: linear-gradient(180deg, #4a4a4a 0%, #2b2b2b 100%);
+}
+ 
+
+#projection-graphic {
+  position: absolute;
+  width: 100%;
+  filter: blur(.3px) contrast(1.05);
+  opacity: .92;
+  animation: projFlicker 3.4s infinite ease-in-out, projDrift 16s infinite ease-in-out;
+}
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  .hero-intro, .acc-body-inner, .next-grid { grid-template-columns:1fr; gap:24px; }
+  .acc-word { font-size: clamp(36px, 12vw, 72px); }
+  .hero-title { font-size: clamp(40px, 14vw, 100px); }
+}
+
+/* ── EXTRAS GALLERY: prism cards ── */
+
+.extras-cards {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 15%;
+  padding: 8% 24px 40px;
+}
+.prism-card {
+  --card-w: 466px;
+  --card-h: 590px;
+  --card-d: 28px; /* how thick the card looks when it turns edge-on */
+  perspective: 1600px;
+  width: var(--card-w);
+  height: var(--card-h);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.prism-inner {
+  position: relative;
+  width: 100%; height: 100%;
+  transform-style: preserve-3d;
+  transition: transform .99s var(--ease);
+}
+.prism-card.flipped .prism-inner { transform: rotateY(180deg); }
+.prism-face {
+  position: absolute; inset: 0;
+  backface-visibility: hidden;
+  overflow: hidden;
+  box-shadow: 0 12px 30px rgba(0,0,0,.15);
+  transition: box-shadow .5s ease;
+}
+.prism-card:hover .prism-face { box-shadow: 0 18px 40px rgba(0,0,0,.22); }
+.prism-front {
+  display: flex; align-items: center; justify-content: center;
+  transform: translateZ(calc(var(--card-d) / 2));
+}
+.prism-front img { display: block; }
+.prism-green .prism-front img { width:100%; height:100%; object-fit: cover; }
+.prism-blue .prism-front { background: #2c3185; }
+.prism-blue .prism-front img { width:100%; height:100%; object-fit: contain; }
+.prism-back {
+  transform: rotateY(180deg) translateZ(calc(var(--card-d) / 2));
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 32px;
+}
+.prism-blue .prism-back { background: #2c3185; }
+.prism-green .prism-back { background: #2b3b30; }
+.prism-back-label {
+  font-family: var(--serif); font-size: 12px; font-weight: 700;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: rgba(247,248,159,.85); margin-bottom: 12px;
+}
+.prism-back-text {
+  font-family: var(--sans); font-size: 14px; line-height: 1.7;
+  color: rgba(247,248,159,.85);
+}
+.prism-hint {
+  position: absolute; bottom: 6px; right: 16px; 
+  font-size: 9px; letter-spacing: .15em; text-transform: uppercase;
+  color: rgba(247,248,159,.85);
+}
+.prism-front .prism-hint { color: rgba(248,249,159,.75); text-shadow: 0 1px 3px rgba(0,0,0,.5); }
+
+/* the two edge strips — these are what make the card read as a solid
+   object with real thickness rather than a flat plane flipping in place */
+.prism-edge {
+  position: absolute; top: 0;
+  width: var(--card-d);
+  height: 100%;
+  left: calc(50% - var(--card-d) / 2);
+  backface-visibility: hidden;
+}
+.prism-edge-r { transform: rotateY(90deg) translateZ(calc(var(--card-w) / 2)); }
+.prism-edge-l { transform: rotateY(-90deg) translateZ(calc(var(--card-w) / 2)); }
+.prism-blue .prism-edge { background: linear-gradient(90deg, #14173f 0%, #3d43b8 45%, #14173f 100%); }
+.prism-green .prism-edge { background: linear-gradient(90deg, #131c16 0%, #3c584a 45%, #131c16 100%); }
+
+
+/* ── EXTRAS GALLERY: paintings ── */
+
+.extras-paintings {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 12%;
+  padding: 12% 12px 12%;
+}
+.painting-tile {
+  position: relative;
+  overflow: hidden;
+  border-radius: 2px;
+  height: 340px;
+}
+
+.painting-tile3 {
+position: relative;
+  overflow: hidden;
+  height: 350px;
+margin-left: -2%;
+}
+
+.painting-tile3 img { height: 100%; width: auto; display: block; }
+
+.painting-tile img { height: 90%; width: auto; display: block; }
+.painting-projection {
+  position: absolute; inset: 0;
+  opacity: 0;
+  mix-blend-mode: screen;
+  pointer-events: none;
+  transition: opacity 1s ease .2s;
+  z-index: 1;
+}
+body.projection-mode .painting-projection { opacity: .85; }
+.painting-projection video {
+  width:100%; height:100%; object-fit:cover;
+  filter: brightness(1.4) contrast(1.1);
+}
+
+/* framed variant — mapping shows only in the margin AROUND the painting,
+   like light hitting the wall/frame rather than the canvas itself */
+.painting-tile--framed {
+  padding: 30px;
+  box-sizing: border-box;
+  background: transparent;
+  transition: background-color 1s ease;
+}
+body.projection-mode .painting-tile--framed { background: var(--black); }
+.painting-tile--framed .painting-projection { inset: 0; } /* spans the full tile, frame included */
+.painting-tile--framed img {
+  position: relative;
+  z-index: 2; /* opaque, sits above the projection — blocks it from showing through the canvas */
+  height: 100%;
+}
+
+/* ── EXTRAS GALLERY: paintings ── */
+
+.extras-podcast {
+    padding: 14% 25% 12%;
+
+}
+
+
+@media(max-width:768px){
+  .prism-card { --card-w: 240px; --card-h: 310px; --card-d: 20px; }
+  .painting-tile { height: 260px; }
+  .extras-cards, .extras-paintings { gap: 40%; }
+}
+</style>
+</head>
+<body>
+
+<div id="cur"></div>
+<div id="cur-r"></div>
+<div class="light-switch-wrap" id="lightSwitch" role="button" aria-label="Toggle projection lighting">
+    
+    <div class="switch-track">
+        
+      <div class="switch-screw"></div>
+      <span class="switch-label on">ON</span>
+      <div class="switch-window"><div class="switch-knob"></div></div>
+      <span class="switch-label off">OFF</span>
+      <div class="switch-screw"></div>
+      
+    </div>
+    
+</div>
+
+<!-- Projection---------- -->
+<div id="dim-overlay"></div>
+<div id="projection-shadow"></div>
+
+<!-- PRELOADER -->
+<div id="preloader" class="done">
+  <span id="pre-num">100%</span>
+  <span id="pre-label">Loading</span>
+</div>
+
+
+
+<!-- NAV -->
+<nav>
+    <a href="../index.html" class="nav-back">All Works</a>
+    <ul class="nav-links">
+      <li><a href="../index.html#about">About</a></li>
+      <li><a href="../index.html#contact">Contact</a></li>
+    </ul>
+</nav>
+
+<!-- ══════════════════════════════════
+     HERO
+══════════════════════════════════ -->
+<section class="hero">
+
+  <div class="hero-title-block">
+    <h1 class="hero-title" id="heroTitle"><span class="word in">OUT of the BOX</span></h1>
+  </div>
+
+  <div class="hero-intro in" id="heroIntro">
+    <p class="hero-intro-text">
+        A collection of projects that don't quite fit anywhere else — and maybe that's the point. Some are closer to my studies, 
+        like a coffee bean recommender system, while others came from simply wanting to try something new: a podcast, 
+        a painting, a different way of researching, or a different way of making.
+        <br>
+
+        They might look quite different from one another, but I see them as connected by the same curiosity. 
+        I like learning by experimenting with unfamiliar tools and ideas, and seeing where they take me.
+        
+    </p>
+    <div class="hero-meta">
+      <div class="hero-meta-row">
+        <span class="hero-meta-label">Category</span>
+        <span class="hero-meta-value">Machine Learning, Research, Sound recording, Writing, Painting, Videomapping</span>
+      </div>
+      <div class="hero-meta-row">
+        <span class="hero-meta-label">Year</span>
+        <span class="hero-meta-value">2024 – 2026</span>  
+      </div>
+      <div class="hero-meta-row">
+        <span class="hero-meta-label">Tools</span>
+        <span class="hero-meta-value">Python, PremierPro, Oil Paint, Animate</span>  
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-image in" id="heroImage">
+    <img src="../assets/extrasmainimg.jpg" alt="Back content">
+ </div>
+  </div>
+
+</section>
+
+<div class="accordion">
+
+  <div class="acc-item" data-acc="">
+    <button class="acc-trigger" aria-expanded="false">
+      <span class="acc-word">My Role</span>
+      <span class="acc-indicator"></span>
+    </button>
+    <div class="acc-body">
+      <div class="acc-body-inner">
+        <p class="acc-body-text"> 
+            Well, if I wanted to put it in corporate terms, I could say I worked across Research & Concept Development, Design & Development, Writing, Illustration & Animation, Editing, and Independent Project Management.
+            <br>But I think my main role in these projects was much simpler: coming up with an idea and actually finishing it, (more or less) the way I imagined it at the beginning.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="acc-item" data-acc="">
+    <button class="acc-trigger" aria-expanded="false">
+      <span class="acc-word">The Work</span>
+      <span class="acc-indicator"></span>
+    </button>
+    <div class="acc-body">
+      <div class="acc-body-inner">
+        <p class="acc-body-text">
+            These projects range from machine learning and data analysis to writing, editorial design, painting, and videomapping. So, depending on which project we're talking about, the work looks quite different.
+        </p>
+        <ul class="acc-body-list">
+            <li>Coffee Recommender App: A personal university project for an AI & Data Analysis course.</li>
+            <li>Gen-Z Loneliness Podcast: A personal project driven by my interest in the subject of generations.</li>
+            <li>Oil Paintings & Videomapping: Personal experiments with different forms of visual expression.</li>
+            <li>Short Stories, Illustration & Printing: Personal projects combining writing, illustration, and making something physical.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="acc-item" data-acc="">
+    <button class="acc-trigger" aria-expanded="false">
+      <span class="acc-word">Outcome</span>
+      <span class="acc-indicator"></span>
+    </button>
+    <div class="acc-body">
+      <div class="acc-body-inner">
+        <p class="acc-body-text">
+            The main outcomes are many happy moments, a bit of disbelief, and occasionally wondering why I am actually doing all of these things.
+            <br>But at least there's one thing I can say for sure: once I start something, I almost always finish it.
+        </p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+<!-- PAINTINGS — mapped when the light is off -->
+<div class="extras-paintings">
+    <div class="painting-tile painting-tile--framed">
+        <div class="painting-projection">
+        <video muted loop playsinline>
+            <source src="/assets/cars_2.mp4" type="video/mp4">
+        </video>
+        </div>
+        <img src="/assets/oilpaint2.png" alt="Hitchhiking, oil on canvas">
+    </div>
+    <div class="painting-tile3">
+        <img src="/assets/oilpaint3.png" alt="Street food vendor, oil on canvas">
+    </div>
+    <div class="painting-tile">
+        <img src="/assets/oilpaint1.jpeg" alt="Street food vendor, oil on canvas">
+        <div class="painting-projection">
+        <video muted loop playsinline>
+            <source src="/assets/faomki.mp4" type="video/mp4">
+        </video>
+        </div>
+    </div>
+</div>
+
+
+<!-- COFFEE APP + BOOK — click to turn the prism -->
+<div class="extras-cards">
+
+    <div class="prism-card prism-blue" id="prismCoffee" tabindex="0" role="button" aria-label="Coffee recommender app — click to read more">
+      <div class="prism-inner">
+        <div class="prism-face prism-front">
+          <img src="/assets/coffebean.png" alt="Coffee recommender app interface">
+          <span class="prism-hint">Click to read →</span>
+        </div>
+        <div class="prism-face prism-back">
+          <p class="prism-back-label">Coffee Bean Recommender</p>
+          <p class="prism-back-text">A personal project for an AI & Data Analysis course. Although I’m more of a visual thinker, I think it’s useful to develop some logical and technical skills as well. That’s why I spent a semester exploring data analysis and AI.
+              <br><br>As part of the course, we had to create a project using some of the machine learning models we learned about, with the goal of either predicting or generating something.
+              <br><br>I am interested in specialty coffee, and I know how difficult it can be to choose between different blends and single origins. When you try something that turns out to be completely different from what you expected, it can be a little disappointing.
+              <br><br>So I decided to make something around a subject I already cared about: a coffee bean recommender web app that uses data and machine learning to suggest coffees based on your preferences.
+          </p>
+        </div>
+        <div class="prism-edge prism-edge-r"></div>
+        <div class="prism-edge prism-edge-l"></div>
+      </div>
+    </div>
+  
+    <div class="prism-card prism-green" id="prismBook" tabindex="0" role="button" aria-label="Mindkét Oldalról Sz. book — click to read more">
+      <div class="prism-inner">
+        <div class="prism-face prism-front">
+          <img src="/assets/aikonyvdemo.jpg" alt="Mindkét Oldalról Sz. book spread">
+          <span class="prism-hint">Click to read →</span>
+        </div>
+        <div class="prism-face prism-back">
+          <p class="prism-back-label">Mindkét Oldalról Sz. - "Sz" from both sides</p>
+          <p class="prism-back-text">A short story collection I wrote, built around fictionalised memories.
+              <br><br>The concept was that each story follows a different character, so the illustrations were also created to reflect each character’s personality and style. Because of this, the visual language changes from story to story rather than staying completely consistent throughout the book.
+              <br><br>The project became more than just an exercise in storytelling and writing. I also explored editing, illustration, typography, and printing, while learning to work with Adobe tools and Illustrator, which were still quite new to me at the time. 
+              <br>Looking back, the project was a great opportunity to experiment, learn by doing, and turn a collection of stories into something physical.
+          </p>
+        </div>
+        <div class="prism-edge prism-edge-r"></div>
+        <div class="prism-edge prism-edge-l"></div>
+      </div>
+    </div>
+  </div>
+
+<!-- PODCAST -->
+<div class="extras-podcast">
+    <iframe width="700" height="313" src="https://youtube.com/embed/uYF0iFHz5Wo" frameborder="0" allowfullscreen></iframe>
+</div>
+
+<div class="next-projects reveal">
+    <p class="next-label">Other work</p>
+    <div class="next-grid">
+      <a href="../works/animation.html" class="next-card">
+        <div class="next-card-inner"><img src="../assets/animationmainimg.jpg" alt="Animation"></div>
+        <div class="next-card-content">
+          <p class="next-card-cat">motion</p>
+          <p class="next-card-title">Animation</p>
+        </div>
+        <span class="next-card-arrow">↗</span>
+      </a>
+      <a href="../works/videomapping.html" class="next-card">
+        <div class="next-card-inner"><img src="../assets/videomappingmainimg.jpg" alt="Videomapping"></div>
+        <div class="next-card-content">
+          <p class="next-card-cat">film</p>
+          <p class="next-card-title">Videomapping</p>
+        </div>
+        <span class="next-card-arrow">↗</span>
+      </a>
+    </div>
+</div>
+  
+
+<footer>
+  <span>© 2026 Aisa Szakal Blanka</span>
+  <span>Budapest, HU</span>
+</footer>
+
+
+<script src="https://cdn.jsdelivr.net/npm/page-flip/dist/js/page-flip.browser.min.js"></script>
+<script>
+
+const preNum = document.getElementById('pre-num');
+const preEl  = document.getElementById('preloader');
+let n = 0;
+const iv = setInterval(() => {
+  n += Math.floor(Math.random() * 12) + 5;
+  if (n >= 100) {
+    n = 100; clearInterval(iv);
+    setTimeout(() => {
+      preEl.classList.add('done');
+      setTimeout(startHero, 500);
+    }, 200);
+  }
+  preNum.textContent = n + '%';
+}, 55);
+
+function startHero() {
+  const titleEl = document.getElementById('heroTitle');
+  const raw = titleEl.textContent.trim();
+  titleEl.innerHTML = raw.split(' ').map(w => `<span class="word">${w}</span>`).join(' ');
+  const words = titleEl.querySelectorAll('.word');
+  words.forEach((w, i) => setTimeout(() => w.classList.add('in'), i * 100));
+  setTimeout(() => {
+    document.getElementById('heroIntro').classList.add('in');
+    document.getElementById('heroImage').classList.add('in');
+  }, words.length * 100 + 100);
+}
+// cursor
+const cur = document.getElementById('cur');
+const curR = document.getElementById('cur-r');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove', e => {
+  mx=e.clientX; my=e.clientY;
+  cur.style.left=mx+'px'; cur.style.top=my+'px';
+});
+(function tick(){ rx+=(mx-rx)*.13; ry+=(my-ry)*.13;
+  curR.style.left=rx+'px'; curR.style.top=ry+'px';
+  requestAnimationFrame(tick); })();
+
+
+document.querySelectorAll('[data-acc]').forEach(item => {
+  const trigger = item.querySelector('.acc-trigger');
+  const body    = item.querySelector('.acc-body');
+  trigger.addEventListener('click', () => {
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('[data-acc]').forEach(a => {
+      a.classList.remove('open');
+      a.querySelector('.acc-trigger').setAttribute('aria-expanded', 'false');
+      a.querySelector('.acc-body').style.maxHeight = '0';
+    });
+    if (!isOpen) {
+      item.classList.add('open');
+      trigger.setAttribute('aria-expanded', 'true');
+      body.style.maxHeight = body.scrollHeight + 'px';
+    }
+  });
+});
+
+document.querySelectorAll('.prism-card').forEach(card => {
+  card.addEventListener('click', () => card.classList.toggle('flipped'));
+  card.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      card.classList.toggle('flipped');
+    }
+  });
+});
+document.addEventListener('mousemove', e => {
+  if (!document.body.classList.contains('projection-mode')) return;
+  const xPct = (e.clientX / window.innerWidth) * 100;
+  const yPct = (e.clientY / window.innerHeight) * 100;
+  document.documentElement.style.setProperty('--mx', xPct + '%');
+  document.documentElement.style.setProperty('--my', yPct + '%');
+});
+
+const lightSwitch = document.getElementById('lightSwitch');
+const paintingVideos = document.querySelectorAll('.painting-projection video');
+
+if (lightSwitch) {
+  lightSwitch.addEventListener('click', () => {
+
+    const turningOn = !document.body.classList.contains('projection-mode');
+
+    document.body.classList.toggle('projection-mode', turningOn);
+
+    paintingVideos.forEach(video => {
+      if (turningOn) {
+        video.currentTime = 0;
+        video.play().catch(() => {});
+      } else {
+        video.pause();
+        video.currentTime = 0;
+      }
+    });
+
+  });
+}
+
+</script>
+
+
+</body></html>

@@ -6,6 +6,7 @@
 <title>Project Name — Aisa Szakal Blanka</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="shared-base.css">
 <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
 <style>
@@ -161,6 +162,7 @@ nav {
   overflow: hidden;
   opacity: 0;
   transition: opacity .9s ease .3s;
+  margin-bottom: 2%;
 }
 .hero-image.in { opacity: 1; }
 .hero-image img,
@@ -453,63 +455,6 @@ nav {
   color: rgba(255,255,255,.92);
 }
 
-/* ── NEXT PROJECTS ── */
-.next-projects {
-  border-top: 1px solid #e0e0e0;
-  padding: 64px 24px 80px;
-}
-.next-label {
-  font-size: 9px; letter-spacing:.2em; text-transform:uppercase; color:#999;
-  margin-bottom: 32px;
-}
-.next-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 3px;
-}
-.next-card {
-  background: var(--gray);
-  aspect-ratio: 4/3;
-  position: relative;
-  overflow: hidden;
-  text-decoration: none;
-  display: block;
-  cursor: none;
-}
-.next-card-inner {
-  position: absolute; inset:0;
-  transition: transform .6s var(--ease);
-}
-.next-card:hover .next-card-inner { transform: scale(1.04); }
-.next-card-content {
-  position: absolute; inset:0;
-  display: flex; flex-direction: column; justify-content: flex-end;
-  padding: 24px;
-  background: linear-gradient(to top, rgba(0,0,0,.65) 0%, transparent 60%);
-}
-.next-card-cat { font-size:9px; letter-spacing:.2em; text-transform:uppercase; color:rgba(255,255,255,.5); margin-bottom:6px; }
-.next-card-title {
-  font-family: var(--serif); font-size: clamp(18px, 2.2vw, 28px);
-  font-weight: 600; color: var(--white); text-transform: uppercase; letter-spacing:-.01em;
-}
-.next-card-arrow {
-  position: absolute; top:20px; right:20px;
-  font-size:18px; color: rgba(255,255,255,.4);
-  transition: transform .3s ease, color .3s;
-}
-.next-card:hover .next-card-arrow { transform: translate(3px,-3px); color:rgba(255,255,255,.9); }
-
-/* ── FOOTER ── */
-footer {
-  border-top: 1px solid #e0e0e0;
-  padding: 20px 24px;
-  display:flex; justify-content:space-between; align-items:center;
-}
-footer span { font-size:11px; letter-spacing:.08em; color:#999; }
-
-/* ── REVEAL ── */
-.reveal { opacity:0; transform:translateY(20px); transition: opacity .7s ease, transform .7s ease; }
-.reveal.in { opacity:1; transform:translateY(0); }
 
 /* ── RESPONSIVE ── */
 @media(max-width:768px){
@@ -597,7 +542,7 @@ footer span { font-size:11px; letter-spacing:.08em; color:#999; }
 <!-- NAV -->
 <nav>
     <a href="../index.html" class="nav-back">All Works</a>
-    <span class="nav-title">Posters</span>  <!-- ← change per page -->
+    <span class="nav-title">Animations</span>  <!-- ← change per page -->
     <ul class="nav-links">
       <li><a href="../index.html#about">About</a></li>
       <li><a href="../index.html#contact">Contact</a></li>
@@ -767,19 +712,21 @@ footer span { font-size:11px; letter-spacing:.08em; color:#999; }
 <div class="next-projects reveal">
     <p class="next-label">Other work</p>
     <div class="next-grid">
-      <a href="/works/posters.html" class="next-card">
+      <a href="../works/posters.html" class="next-card">
         <div class="next-card-inner"></div>
         <div class="next-card-content">
-          <p class="next-card-cat">Prints</p>
+          <p class="next-card-cat">prints</p>
           <p class="next-card-title">Graphics</p>
+          <img src="../assets/postermainimg.jpg" alt="Back content">
         </div>
         <span class="next-card-arrow">↗</span>
       </a>
-      <a href="/works/videomapping.html" class="next-card">
+      <a href="../works/extras.html" class="next-card">
         <div class="next-card-inner"></div>
         <div class="next-card-content">
-          <p class="next-card-cat">Film</p>
-          <p class="next-card-title">Videomapping</p>
+          <p class="next-card-cat">extras</p>
+          <p class="next-card-title">Out of the box</p>
+          <img src="../assets/extrasmainimg.jpg" alt="Back content">
         </div>
         <span class="next-card-arrow">↗</span>
       </a>
