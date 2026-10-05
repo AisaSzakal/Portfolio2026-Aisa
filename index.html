@@ -486,18 +486,19 @@ footer span { font-size:11px; letter-spacing:.08em; color:#999; }
   gap: 2px;
   cursor: pointer;
   user-select: none;
+
 }
 
 #dim-overlay {
   position: fixed;
   inset: 0;
-  background: #05050a;
+  background: #000000;
   opacity: 0;
   pointer-events: none;
   z-index: 400;
   transition: opacity 1.3s ease;
 }
-body.projection-mode #dim-overlay { opacity: .82; } /* never fully black */
+body.projection-mode #dim-overlay { opacity: .12; }
 
 #projection-layer {
   position: fixed;
@@ -510,6 +511,70 @@ body.projection-mode #dim-overlay { opacity: .82; } /* never fully black */
   overflow: hidden;
 }
 body.projection-mode #projection-layer { opacity: 1; }
+
+/* ── HERO PROJECTION STATE ── */
+body.projection-mode .hero-image img {
+  filter: brightness(.52) contrast(1.08);
+  transition: filter 1.2s ease;
+}
+
+.hero-image img {
+  transition: filter 1.2s ease;
+}
+
+#projection-layer {
+  /* JS positions this directly over the hero image */
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+}
+
+#projection-graphic {
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.projection-hint {
+  position: fixed;
+  top: 150px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 590;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.9s ease 1.6s; /* waits for room to go dark first */
+  text-align: center;
+}
+body.room-dark .projection-hint        { opacity: 1; }
+.projection-hint.fade-out              { opacity: 0 !important; transition: opacity 0.7s ease 0s; }
+ 
+.hint-arrow {
+  font-size: 11px;
+  color: rgba(255,255,255,0.5);
+  letter-spacing: .22em;
+  animation: hintBob 1.8s ease-in-out infinite;
+}
+.hint-text {
+  font-family: var(--sans);
+  font-size: 13px;
+  font-style: italic;
+  color: rgba(255,255,255,0.4);
+  letter-spacing: .04em;
+  line-height: 1.7;
+  white-space: nowrap;
+}
+
+
+body.projection-mode .projection-prompt {
+  opacity: .9;
+  transform: translateX(-50%) translateY(0);
+}
 
 .switch-label {
   font-family: var(--serif);
@@ -562,12 +627,7 @@ body.projection-mode .switch-track {
   pointer-events: none;
   opacity: 0;
   transition: opacity .6s ease;
-  background: radial-gradient(
-    circle at var(--mx, 50%) var(--my, 50%),
-    rgba(137, 129, 129, 0.55) 0,
-    rgba(80, 79, 79, 0.28) 90px,
-    rgba(28, 27, 27, 0) 220px
-  );
+  background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgb(222 222 222 / 38%) 0, rgb(175 172 172 / 28%) 90px, rgba(28, 27, 27, 0) 220px);
 }
 
 body.projection-mode #projection-shadow { opacity: 1; }
@@ -625,6 +685,46 @@ body.projection-mode .switch-knob {
   100% { transform: translate(0,0) rotate(0deg) scale(1); }
 }
 
+/* ── projection hint ── */
+.projection-hint {
+  position: fixed;
+  top: 150px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 590;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.9s ease 1.6s; /* waits for room to go dark first */
+  text-align: center;
+}
+body.room-dark .projection-hint        { opacity: 1; }
+.projection-hint.fade-out              { opacity: 0 !important; transition: opacity 0.7s ease 0s; }
+ 
+.hint-arrow {
+  font-size: 11px;
+  color: rgba(255,255,255,0.5);
+  letter-spacing: .22em;
+  animation: hintBob 1.8s ease-in-out infinite;
+}
+.hint-text {
+  font-family: var(--sans);
+  font-size: 13px;
+  font-style: italic;
+  color: rgba(255,255,255,0.4);
+  letter-spacing: .04em;
+  line-height: 1.7;
+  white-space: nowrap;
+}
+@keyframes hintBob {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-5px); }
+}
+ 
+
 </style>
 </head>
 <body>
@@ -644,12 +744,22 @@ body.projection-mode .switch-knob {
   </div>
   
 </div>
+<div class="projection-hint" id="projHint">
+  <span class="hint-arrow">↑ </span>
+  <span class="hint-text">turn on the lamp<br>to turn off the light</span>
+</div>
+
+
+<div class="projection-hint" id="projHint">
+  <span class="hint-arrow">↑</span>
+  <span class="hint-text">turn on the lamp<br>to turn off the light</span>
+</div>
 
 <!-- Projection---------- -->
 <div id="dim-overlay"></div>
 <div id="projection-shadow"></div>
 <div id="projection-layer">
-  <video id="projection-graphic" muted playsinline>
+  <video id="projection-graphic" muted playsinline preload="auto">
     <source src="./assets/page2.mp4" type="video/mp4">
   </video>
 </div>
@@ -848,15 +958,47 @@ els.forEach(el=>io.observe(el));
 
 
 const vid = document.getElementById('projection-graphic');
-const loopStart = 1.96; // seconds — where the loop segment begins
+const heroImage = document.querySelector('.hero-image');
+const loopStart = 1.96;
 
 vid.playbackRate = 0.35;
+
+/* Keep the projection locked to the actual photograph.
+   This means the animation behaves like a projection instead
+   of a graphic floating over the whole website. */
+function syncProjection() {
+  if (!heroImage) return;
+
+  const r = heroImage.getBoundingClientRect();
+  const pad = 10;
+
+  const layer = document.getElementById('projection-layer');
+  layer.style.left = (r.left - pad) + 'px';
+  layer.style.top = (r.top - pad) + 'px';
+  layer.style.width = (r.width + pad * 2) + 'px';
+  layer.style.height = (r.height + pad * 2) + 'px';
+}
+
+window.addEventListener('resize', syncProjection);
+window.addEventListener('scroll', syncProjection);
+window.addEventListener('load', syncProjection);
+syncProjection();
 
 vid.addEventListener('ended', () => {
   vid.currentTime = loopStart;
   vid.play();
 });
-// projecting mouse ------------------------ maybe we can take this out later
+
+/* Start in the projected/dark state.
+   The visitor's first action is turning the light on. */
+document.body.classList.add('projection-mode');
+requestAnimationFrame(() => {
+  syncProjection();
+  vid.currentTime = 0;
+  vid.play().catch(() => {});
+});
+
+/* subtle cursor-responsive shadow */
 document.addEventListener('mousemove', e => {
   if (!document.body.classList.contains('projection-mode')) return;
   const xPct = (e.clientX / window.innerWidth) * 100;
@@ -864,14 +1006,20 @@ document.addEventListener('mousemove', e => {
   document.documentElement.style.setProperty('--mx', xPct + '%');
   document.documentElement.style.setProperty('--my', yPct + '%');
 });
-
+// hint auto-fades after 15 s of being visible (1.6 s fade-in delay + 13 s reading time)
+setTimeout(() => { hint.classList.add('fade-out'); }, 1500);
+ 
 document.getElementById('lightSwitch').addEventListener('click', () => {
   const isOn = document.body.classList.toggle('projection-mode');
-  if (isOn) {
+
+  if (projectionOn) {
+    syncProjection();
     vid.currentTime = 0;
-    vid.play();
+    vid.play().catch(() => {});
+    hint.classList.remove('fade-out');
   } else {
     vid.pause();
+    hint.classList.add('fade-out');
   }
 });
 
@@ -944,6 +1092,8 @@ lines.forEach(line => {
     tilt = 0;
   });
 });
+
+
 </script>
 </body>
 </html>

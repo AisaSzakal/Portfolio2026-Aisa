@@ -245,13 +245,13 @@ nav {
 #dim-overlay {
   position: fixed;
   inset: 0;
-  background: #05050aa8;
+  background: #000000;
   opacity: 0;
   pointer-events: none;
   z-index: 400;
   transition: opacity 1.3s ease;
 }
-body.projection-mode #dim-overlay { opacity: .82; } /* never fully black */
+body.projection-mode #dim-overlay { opacity: .22; }
 
 body.projection-mode { opacity: 1; }
 
@@ -368,6 +368,46 @@ body.projection-mode .switch-knob {
   animation: projFlicker 3.4s infinite ease-in-out, projDrift 16s infinite ease-in-out;
 }
 
+/* ── projection hint ── */
+.projection-hint {
+  position: fixed;
+  top: 5%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 590;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  pointer-events: none;
+  opacity: 1;
+  transition: opacity 0.9s ease 1.6s; /* waits for room to go dark first */
+  text-align: center;
+}
+body.room-dark .projection-hint        { opacity: 0; }
+.projection-hint.fade-out              { opacity: 1 !important; transition: opacity 0.7s ease 0s; }
+ 
+.hint-arrow {
+  font-size: 11px;
+  color: rgba(54, 52, 52, 0.5);
+  letter-spacing: .22em;
+  animation: hintBob 1.8s ease-in-out infinite;
+}
+.hint-text {
+  font-family: var(--sans);
+  font-size: 13px;
+  font-style: italic;
+  color: rgba(44, 43, 43, 0.4);
+  letter-spacing: .04em;
+  line-height: 1.7;
+  white-space: nowrap;
+}
+@keyframes hintBob {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-5px); }
+}
+ 
+
 /* ── RESPONSIVE ── */
 @media(max-width:768px){
   .hero-intro, .acc-body-inner, .next-grid { grid-template-columns:1fr; gap:24px; }
@@ -455,7 +495,19 @@ body.projection-mode .switch-knob {
 .prism-green .prism-edge { background: linear-gradient(90deg, #131c16 0%, #3c584a 45%, #131c16 100%); }
 
 
+
 /* ── EXTRAS GALLERY: paintings ── */
+.painting-text {
+  padding: 9% 36% 9%;
+
+}
+.painting-text-title {
+  font-family: var(--sans);
+  font-size: 18px;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--black);
+}
 
 .extras-paintings {
   display: flex;
@@ -463,13 +515,14 @@ body.projection-mode .switch-knob {
   align-items: flex-end;
   flex-wrap: wrap;
   gap: 12%;
-  padding: 12% 12px 12%;
+  padding: 12% 0px 12%;
+
 }
 .painting-tile {
   position: relative;
   overflow: hidden;
   border-radius: 2px;
-  height: 340px;
+  height: 345px;
 }
 
 .painting-tile3 {
@@ -515,9 +568,28 @@ body.projection-mode .painting-tile--framed { background: var(--black); }
 /* ── EXTRAS GALLERY: paintings ── */
 
 .extras-podcast {
-    padding: 14% 25% 12%;
-
+    padding: 14% 25% 0%;
 }
+
+.video-text {
+  padding: 0% 25% 12%;
+  margin-right: 2%;
+}
+.video-text-title {
+  font-family: var(--sans);
+  font-size: 18px;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--black);
+  margin-bottom: 8px;
+}
+.video-text-body {
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.8;
+  color: #555;
+}  
 
 
 @media(max-width:768px){
@@ -543,6 +615,11 @@ body.projection-mode .painting-tile--framed { background: var(--black); }
       
     </div>
     
+</div>
+
+<div class="projection-hint" id="projHint">
+  <span class="hint-arrow">↑ </span>
+  <span class="hint-text">turn off the lamp<br>to turn on the light</span>
 </div>
 
 <!-- Projection---------- -->
@@ -664,24 +741,35 @@ body.projection-mode .painting-tile--framed { background: var(--black); }
 <!-- PAINTINGS — mapped when the light is off -->
 <div class="extras-paintings">
     <div class="painting-tile painting-tile--framed">
-        <div class="painting-projection">
+        <img src="../assets/oilpaint2.png" alt="Hitchhiking, oil on canvas">
+        <div class="painting-text">
+          <p class="painting-text-title">Whither?</p>
+        </div>
+      <div class="painting-projection">
         <video muted loop playsinline>
             <source src="../assets/cars_2.mp4" type="video/mp4">
         </video>
         </div>
-        <img src="../assets/oilpaint2.png" alt="Hitchhiking, oil on canvas">
     </div>
+      
     <div class="painting-tile3">
-        <img src="../assets/oilpaint3.png" alt="Street food vendor, oil on canvas">
+      <img src="../assets/oilpaint3.png" alt="Street food vendor, oil on canvas">
+      <div class="painting-text">
+        <p class="painting-text-title">Streetfood and the cook</p>
+      </div>
     </div>
+   
     <div class="painting-tile">
         <img src="../assets/oilpaint1.jpeg" alt="Street food vendor, oil on canvas">
+        <div class="painting-text">
+        <p class="painting-text-title">Nizza '26</p>
+      </div>
         <div class="painting-projection">
-        <video muted loop playsinline>
-            <source src="../assets/faomki.mp4" type="video/mp4">
-        </video>
+          <video muted loop playsinline>
+              <source src="../assets/faomki.mp4" type="video/mp4">
+          </video>
         </div>
-    </div>
+</div>
 </div>
 
 
@@ -730,6 +818,14 @@ body.projection-mode .painting-tile--framed { background: var(--black); }
 <!-- PODCAST -->
 <div class="extras-podcast">
     <iframe width="700" height="313" src="https://youtube.com/embed/uYF0iFHz5Wo" frameborder="0" allowfullscreen></iframe>
+         
+</div>
+<div class="video-text">
+       <p class="video-text-title">Podcast about Generations, Gen-Z and Technology</p>
+      <p class="video-text-body">At the time I organised this podcast, I was very interested in the subject of generations. How people born in different periods tend to communicate, work, learn, and show love differently. Of course, my generation (Gen-Z) caught my attention the most, since that was the easiest one for me to sympathise with.
+<br>I came across some research suggesting that this generation is becoming less social, and I wanted to make a small study about it: whether it is actually true or not, and what could be the cause of it. One possible reason could be technology.
+<br>At the time, I had access to a small studio with microphones and all the equipment I needed. I also managed to invite a writer and researcher, Rens van der Vorst, who was working on the subject of “Technology vs. Generations”. For the podcast, I also invited another Gen-Z student who could give a personal perspective on the topic.
+<br>We had a great conversation about my findings, their experiences, and their general thoughts about the subject.</p>
 </div>
 
 <div class="next-projects reveal">

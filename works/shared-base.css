@@ -90,7 +90,7 @@ footer {
 
 
 /* DIM + PROJECTION LAYER */
-#dim-overlay { position: fixed; inset: 0; background: #05050a; opacity: 0; pointer-events: none; z-index: 400; transition: opacity 1.3s ease; }
+#dim-overlay { position: fixed; inset: 0; background: #000000; opacity: 0; pointer-events: none; z-index: 400; transition: opacity 1.3s ease; }
 body.projection-mode #dim-overlay { opacity: .82; }
 
 #projection-layer { position: fixed; inset: 0; z-index: 450; pointer-events: none; opacity: 0; transition: opacity 1.4s ease .3s; mix-blend-mode: screen; overflow: hidden; }
